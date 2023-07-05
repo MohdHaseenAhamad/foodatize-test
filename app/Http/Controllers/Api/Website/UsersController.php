@@ -46,7 +46,7 @@ class UsersController extends Controller
 //        dd($request->all());
 //       $obj = new User();
 //       $data=$obj->save($request->all());
-       $data= User::createUser($request);
+       $data = User::createUser($request->all());
        return new UserResource($data);
     }
 
