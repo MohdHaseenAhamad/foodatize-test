@@ -17,6 +17,7 @@ class User extends Authenticatable {
      */
     protected $fillable = [
         'phone_number',
+        'phone_otp',
     ];
 
     /**
@@ -36,8 +37,11 @@ class User extends Authenticatable {
 //        'email_verified_at' => 'datetime',
 //    ];
     public function createUser($request) {
-        $data =User::create($request);
-        $data = User::with('fields')->find($data->id);
+
+        $data =User::create($request);   /*Store Data */
+
+        $data = User::find($data->id); /*Fetch Data Using Id  */
+
         return $data;
     }
 

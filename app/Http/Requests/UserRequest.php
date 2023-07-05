@@ -24,7 +24,17 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_number' => ['required','min:10','max:10'],
+            'phone_number' =>
+                [
+                    'required',
+                    'min:10',
+                    'max:10',
+                ],
+            'phone_otp'=>
+                [
+                    'min:6',
+                    'max:6',
+                ],
         ];
     }
 }

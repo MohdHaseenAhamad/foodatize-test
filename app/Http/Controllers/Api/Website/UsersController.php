@@ -43,7 +43,7 @@ class UsersController extends Controller
      */
     public function store(UserRequest $request)
     {
-//        dd($request->all());
+        dd($request->all());
 //       $obj = new User();
 //       $data=$obj->save($request->all());
        $data = User::createUser($request->all());

@@ -16,7 +16,8 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'phone_number'=>$this->phone_number
+            'phone_number'=>$this->phone_number,
+            'phone_otp'=>$this->phone_otp,
         ];
     }
 }
