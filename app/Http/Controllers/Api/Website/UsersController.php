@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Api\Website;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
+//use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
@@ -41,13 +42,29 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(Request $request)
     {
-        dd($request->all());
-//       $obj = new User();
-//       $data=$obj->save($request->all());
-       $data = User::createUser($request->all());
-       return new UserResource($data);
+
+
+        $validator = validator::make($request->all(), [
+            'phone_number' => ['required','min:10', 'max:10'],
+            'phone_otp' => ['required','min:6', 'max:6'],
+        ]);  /*Add Users Validation*/
+
+        if ($validator->fails())
+        {
+            return response()->json([
+                'status' => 400,
+                'message' => $validator->messages(),
+            ], 400);
+        }
+        else
+        {
+            $result = User::createUser($request->all());
+            $formateData = new UserResource($result['data']);
+            return response()->json(['status'=>222,'massage'=>'','data'=>$formateData,'user_type'=>$result['user_type']],222);
+        }
+
     }
 
     /**

@@ -37,12 +37,22 @@ class User extends Authenticatable {
 //        'email_verified_at' => 'datetime',
 //    ];
     public function createUser($request) {
+//
+        $phoneNumberExistOrNot=User::where('phone_number', '=', $request['phone_number'])->exists();
+        if($phoneNumberExistOrNot)
+        {
 
-        $data =User::create($request);   /*Store Data */
+            $result['data'] = User::where('phone_number', $request['phone_number'])->first();
+            $result['user_type'] = 'old';
+        }else
+        {
+            $users =User::create($request);
+            $result['data'] = User::find($users->id); /*Fetch Data Using Id  */
+            $result['user_type']= 'new';
+        }
+        /*Store Data */
 
-        $data = User::find($data->id); /*Fetch Data Using Id  */
-
-        return $data;
+        return $result;
     }
 
 }
