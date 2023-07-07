@@ -21,6 +21,8 @@ use App\Http\Controllers\Api\Website\UsersController;
 //});
 
 Route::post('user/store',[UsersController::class,'store']);
+Route::post('user/otp-verification',[UsersController::class,'otpVerification']);
+Route::post('user/save-basic-info',[UsersController::class,'saveBasicInfo']);
 //Route::get('student',[UserController::class,'index']);
 //Route::get('student/show/{id}',[UserController::class,'show']);
 //Route::put('student/update/{id}',[UserController::class,'update']);
