@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+
 use Illuminate\Auth\Authenticatable;
 
 class UsersController extends Controller {
@@ -64,6 +65,12 @@ class UsersController extends Controller {
     }
 
     public function otpVerification(Request $request) {
+        $credentials = $request->only('phone_number', 'phone_otp');
+
+//        $credentials = $this->credentials($request);
+
+//        $token = auth('api')->attempt($credentials);
+//        dd($token);
         $validator = validator::make($request->all(), [
             'phone_otp' => ['required', 'min:6', 'max:6'],
             'phone_number' => ['required', 'min:10', 'max:10'],
@@ -72,7 +79,7 @@ class UsersController extends Controller {
             'min' => 'Please enter at least :min characters',
             'max' => 'Please enter less then :max characters',
         ]);  /*Add Users Validation*/
-
+//
         if ($validator->fails()) {
             return response()->json([
                 'status' => 400,
@@ -80,29 +87,48 @@ class UsersController extends Controller {
             ], 400);
         } else {
             $retval = User::otpVerification($request->all());
-
+            if(JWTAuth\JWTAuth::attempt(['phone_number' => $request->phone_number, 'verification_code' => $request->phone_otp])){
+//                $user = User::user();
+                $success['token'] =  $retval->createToken('App')->accessToken;
+                return response()->json(['success' => $success], 200);
+            }
+            else{
+                return response()->json(['error'=>'Unauthorised'], 401);
+            }
             if (!empty($retval)) {
 
-                $otp = $request->phone_;
-                $phone = $request->phone_number;
+//                $otp = $request->phone_otp;
+//                $phone = $request->phone_number;
+//                $credentials = [
+//                    'phone_otp'=>$otp,
+//                    'phone_number'=>$phone,
+//                    ];
                 // you may skip the 'api' if you set your default guard
 //                $token = auth('api')->attempt([
 //                    'phone_otp'    => $otp,
 //                    'phone_number' => $phone,
 //                ]);
-                if (!$userToken=JWTAuth\JWTAuth::fromUser(['otp'=>$otp,'phone'=>$phone])) {
-                    return response()->json(['error' => 'invalid_credentials'], 401);
+                try {
+                    if (!$userToken = JWTAuth\JWTAuth::attempt($credentials)) {
+                        return response()->json(['error' => 'invalid_credentials'], 401);
+                    }
+                }catch (JWTException $e) {
+                    return $credentials;
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Could not create token.',
+                    ], 500);
                 }
-                dd($retval);
-                return response()->json(compact('userToken'));
-                if($token==false)
-                {
-                    return response()->json(['status' => 400,'message'=>'Unauthorized user']);
-                }else
-                {
-                    return response()->json(['status' => 200, 'massage' => 'Your otp is correct', 'data' => $retval,'access_token' => $token, 'token_type' => 'bearer',
-                        'expires_in' => auth('api')->factory()->getTTL() * 60], 200);
-                }
+//                dd($retval);
+//                return response()->json(compact('userToken'));
+//                if($userToken==false)
+//                {
+//                    return response()->json(['status' => 400,'message'=>'Unauthorized user']);
+//                }else
+//                {
+//                    return response()->json(['status' => 200, 'massage' => 'Your otp is correct', 'data' => $retval,'access_token' => $userToken, 'token_type' => 'bearer',
+//                        'expires_in' => auth('api')->factory()->getTTL() * 60], 200);
+//                }
 
             }else{
                 return response()->json(['status' => 400, 'massage' => 'Your otp is not correct', 'data' => $retval], 400);
@@ -121,7 +147,7 @@ class UsersController extends Controller {
             'min' => 'Please enter at least :min characters',
             'max' => 'Please enter less then :max characters',
         ]);
-        dd($validator->messages());
+
     }
     protected function respondWithToken($token)
     {
