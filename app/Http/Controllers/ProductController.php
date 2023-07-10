@@ -68,9 +68,11 @@ class ProductController extends Controller
             $pro->price = $request->price;
             $pro->description = $request->description;
             $pro->save();
+
             return response()->json([
                 'status' => 200,
                 'message' => "item add Successfully",
+
             ], 200);
         }
     }
