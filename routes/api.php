@@ -26,7 +26,7 @@ Route::post('user/otp-verification',[UsersController::class,'otpVerification']);
 Route::put('user/save-basic-info/{id}',[UsersController::class,'saveBasicInfo']);
 
 Route::post('product',[ProductController::class,'index']);
-Route::post('product/store',[ProductController::class,'store']);
+Route::post('product/register',[ProductController::class,'registerUsers']);
 Route::post('product/search', [ProductController::class,'filter']);
 
 //Route::get('student',[UserController::class,'index']);

@@ -23,9 +23,7 @@ class UsersController extends Controller {
         //
     }
 
-    public function registerUsers() {
 
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -40,8 +38,7 @@ class UsersController extends Controller {
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-
+    public function registerUsers(Request $request) {
 
         $validator = validator::make($request->all(), [
             'phone_number' => ['required', 'min:10', 'max:10'],
@@ -60,7 +57,15 @@ class UsersController extends Controller {
         } else {
             $result = User::createUser($request->all());
             $formateData = new UserResource($result['data']);
-            return response()->json(['status' => 200, 'massage' => '', 'data' => $formateData, 'user_type' => $result['user_type']], 200);
+            if (!empty($result)) {
+                return response()->json(['status' => 200, 'massage' => '', 'data' => $formateData, 'user_type' => $result['user_type']], 200);
+            } else {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'something went wrong',
+                ], 400);
+            }
+
         }
 
     }
@@ -90,13 +95,17 @@ class UsersController extends Controller {
                     'status' => 200, 'massage' => 'user verification is successfully', 'data' => $results,
                 ]);
 
+            } else {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'something went wrong',
+                ], 400);
             }
 
         }
     }
 
-    public function saveBasicInfo(Request $request,$id)
-    {
+    public function saveBasicInfo(Request $request, $id) {
         $validator = validator::make($request->all(), [
             'name' => ['required', 'min:2', 'max:100'],
             'email' => ['required', 'email', 'max:100'],
@@ -112,11 +121,19 @@ class UsersController extends Controller {
             ], 400);
         } else {
             $data = [
-                'name'=>$request->name,
-                'email'=>$request->email
+                'name' => $request->name,
+                'email' => $request->email
             ];
-            $data = User::saveBasicInfo($data,$id);
-            return response()->json(['status' => 200, 'massage' => 'update_successfully', 'data' => $data], 200);
+            $data = User::saveBasicInfo($data, $id);
+            if (!empty($data)) {
+                return response()->json(['status' => 200, 'massage' => 'update_successfully', 'data' => $data], 200);
+            } else {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'something went wrong',
+                ], 400);
+            }
+
         }
 
 
