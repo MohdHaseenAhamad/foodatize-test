@@ -23,7 +23,7 @@ use App\Http\Controllers\ProductController;
 
 Route::post('user/store',[UsersController::class,'store']);
 Route::post('user/otp-verification',[UsersController::class,'otpVerification']);
-Route::post('user/save-basic-info',[UsersController::class,'saveBasicInfo']);
+Route::put('user/save-basic-info/{id}',[UsersController::class,'saveBasicInfo']);
 
 Route::post('product',[ProductController::class,'index']);
 Route::post('product/store',[ProductController::class,'store']);

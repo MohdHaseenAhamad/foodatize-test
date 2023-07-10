@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('email_otp','10')->nullable();
             $table->dateTime('email_otp_time')->nullable()->default(NULL);
             $table->tinyInteger('email_status')->nullable();
+            $table->string('token','255')->nullable()->default(NULL);
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
