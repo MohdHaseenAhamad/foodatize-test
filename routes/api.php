@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Website\UsersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\Website\AddressContoller;
 use App\Http\Controllers\Api\Website\CardController;
+use App\Http\Controllers\Api\Website\OrderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,6 +40,8 @@ Route::get('add-to-cart/{id}', [CardController::class, 'addToCart']);
 Route::patch('update-cart', [CardController::class, 'update']);
 Route::delete('remove-from-cart', [CardController::class, 'remove']);
 
+
+Route::post('order/store',[OrderController::class,'store']);
 //Route::get('student',[::class,'index']);
 //Route::get('student/show/{id}',[UserController::class,'show']);
 //Route::put('student/update/{id}',[UserController::class,'update']);
