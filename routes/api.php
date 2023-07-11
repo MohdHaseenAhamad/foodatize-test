@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Website\UsersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\Website\AddressContoller;
+use App\Http\Controllers\Api\Website\CardController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,7 +27,7 @@ Route::post('user/otp-verification',[UsersController::class,'otpVerification']);
 Route::put('user/save-basic-info/{id}',[UsersController::class,'saveBasicInfo']);
 
 Route::post('product',[ProductController::class,'index']);
-Route::post('product/register',[ProductController::class,'registerUsers']);
+Route::post('product/store',[ProductController::class,'store']);
 Route::post('product/search', [ProductController::class,'filter']);
 
 Route::post('address/store',[AddressContoller::class,'store']);
@@ -34,8 +35,11 @@ Route::get('address/edit/{id}',[AddressContoller::class,'edit']);
 Route::put('address/update/{id}',[AddressContoller::class,'update']);
 Route::get('address/show/{id}',[AddressContoller::class,'show']);
 
+Route::get('add-to-cart/{id}', [CardController::class, 'addToCart']);
+Route::patch('update-cart', [CardController::class, 'update']);
+Route::delete('remove-from-cart', [CardController::class, 'remove']);
 
-//Route::get('student',[UserController::class,'index']);
+//Route::get('student',[::class,'index']);
 //Route::get('student/show/{id}',[UserController::class,'show']);
 //Route::put('student/update/{id}',[UserController::class,'update']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

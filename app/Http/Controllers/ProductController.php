@@ -40,6 +40,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+//        die;
         $validator = validator::make($request->all(), [
             'name' => ['required', 'min:2', 'max:100'],
             'image' => ['required','image','mimes:jpg,png,jpeg,gif,svg','max:2048'],
@@ -68,12 +69,15 @@ class ProductController extends Controller
             $pro->price = $request->price;
             $pro->description = $request->description;
             $pro->save();
+if($pro->save())
+{
+    return response()->json([
+        'status' => 200,
+        'message' => "item add Successfully",
 
-            return response()->json([
-                'status' => 200,
-                'message' => "item add Successfully",
+    ], 200);
+}
 
-            ], 200);
         }
     }
 
