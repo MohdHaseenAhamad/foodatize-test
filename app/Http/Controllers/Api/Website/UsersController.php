@@ -41,7 +41,7 @@ class UsersController extends Controller {
     public function registerUsers(Request $request) {
 
         $validator = validator::make($request->all(), [
-            'phone_number' => ['required','numeric', 'min:10', 'max:10'],
+            'phone_number' => ['required', 'min:10', 'max:10'],
             'phone_otp' => ['required', 'min:6', 'max:6'],
         ], [
             'required' => ':attribute is required.',

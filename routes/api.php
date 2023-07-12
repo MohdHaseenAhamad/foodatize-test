@@ -23,7 +23,7 @@ use App\Http\Controllers\Api\Website\OrderController;
 //    Route::post('user/profile',[UserController::class,'profile']);
 //});
 
-Route::post('user/store',[UsersController::class,'store']);
+Route::post('user/register-users',[UsersController::class,'registerUsers']);
 Route::post('user/otp-verification',[UsersController::class,'otpVerification']);
 Route::put('user/save-basic-info/{id}',[UsersController::class,'saveBasicInfo']);
 
