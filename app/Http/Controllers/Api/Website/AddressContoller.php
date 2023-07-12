@@ -88,6 +88,8 @@ class AddressContoller extends Controller {
         ], 200);
     }
 
+
+
     /**
      * Update the specified resource in storage.
      * @param  \Illuminate\Http\Request $request
@@ -138,6 +140,30 @@ class AddressContoller extends Controller {
                     'message' => 'something went wrong',
                 ], 400);
             }
+        }
+    }
+
+    public function getPrice(Request $request)
+    {
+        $km  =$request->km;
+        if($km <= 2)
+        {
+            return response()->json([
+                'status' => 200,
+                'message' => "address update Successfully",
+                'data' => 'Free',
+            ], 200);
+        }
+        else
+        {
+            $value = (int)($km / 2);
+
+            $value = $value * 5;
+            return response()->json([
+                'status' => 200,
+                'message' => "address update Successfully",
+                'data' => $value,
+            ], 200);
         }
     }
 

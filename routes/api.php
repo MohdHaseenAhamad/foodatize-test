@@ -42,6 +42,7 @@ Route::delete('remove-from-cart', [CardController::class, 'remove']);
 
 
 Route::post('order/store',[OrderController::class,'store']);
+Route::post('get-price',[AddressContoller::class,'getPrice']);
 //Route::get('student',[::class,'index']);
 //Route::get('student/show/{id}',[UserController::class,'show']);
 //Route::put('student/update/{id}',[UserController::class,'update']);

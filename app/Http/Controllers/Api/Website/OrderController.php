@@ -45,7 +45,7 @@ class OrderController extends Controller
         $obj->grand_total =$request->grand_total;
         $obj->item_count = $request->item_count;
 //        $obj->save();
-//        $obj->adb_id = '';
+        $obj->adb_id = $request->adb_id;
         $obj->payment_status =0;
         $obj->payment_method = null;
         if($obj->save())
@@ -54,6 +54,7 @@ class OrderController extends Controller
             foreach ($items as $item)
             {
                 $orderItem = new OrderItem();
+                $orderItem->order_id = $obj->id;
                 $orderItem->product_id = $item->pro_id;
                 $orderItem->quantity = $item->quantity;
                 $orderItem->price = ($item->price * $item->quantity);
