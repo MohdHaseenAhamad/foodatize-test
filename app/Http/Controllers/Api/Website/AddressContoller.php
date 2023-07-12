@@ -150,18 +150,17 @@ class AddressContoller extends Controller {
         {
             return response()->json([
                 'status' => 200,
-                'message' => "address update Successfully",
+                'message' => "your price get Successfully",
                 'data' => 'Free',
             ], 200);
         }
         else
         {
             $value = (int)($km / 2);
-
             $value = $value * 5;
             return response()->json([
                 'status' => 200,
-                'message' => "address update Successfully",
+                'message' => "your price get Successfully",
                 'data' => $value,
             ], 200);
         }
