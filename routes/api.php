@@ -37,6 +37,7 @@ Route::put('address/update/{id}',[AddressContoller::class,'update']);
 Route::get('address/show/{id}',[AddressContoller::class,'show']);
 
 Route::get('add-to-cart/{id}', [CardController::class, 'addToCart']);
+Route::get('add-to-cart/{id}', [CardController::class, 'addToCart']);
 Route::patch('update-cart', [CardController::class, 'update']);
 Route::delete('remove-from-cart', [CardController::class, 'remove']);
 

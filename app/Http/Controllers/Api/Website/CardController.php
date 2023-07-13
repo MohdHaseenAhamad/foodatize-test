@@ -16,7 +16,12 @@ class CardController extends Controller
      */
     public function index()
     {
-        //
+        $results = Card::all();
+        return response()->json([
+            'status' => 200,
+            'message' => "card data fetch Successfully",
+            'data' => $results,
+        ], 200);
     }
 
     /**
@@ -26,7 +31,7 @@ class CardController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**

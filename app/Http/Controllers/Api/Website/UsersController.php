@@ -42,7 +42,6 @@ class UsersController extends Controller {
 
         $validator = validator::make($request->all(), [
             'phone_number' => ['required', 'min:10', 'max:10'],
-            'phone_otp' => ['required', 'min:6', 'max:6'],
         ], [
             'required' => ':attribute is required.',
             'min' => 'Please enter at least :min characters',
@@ -55,7 +54,11 @@ class UsersController extends Controller {
                 'message' => $validator->messages(),
             ], 400);
         } else {
-            $result = User::createUser($request->all());
+            $data = [
+                'phone_number'=>$request->phone_number,
+                'phone_otp'=>mt_rand(10000, 99999),
+            ];
+            $result = User::createUser($data);
             $formateData = new UserResource($result['data']);
             if (!empty($result)) {
                 return response()->json(['status' => 200, 'massage' => '', 'data' => $formateData, 'user_type' => $result['user_type']], 200);

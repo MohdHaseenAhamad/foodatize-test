@@ -172,6 +172,24 @@ class AddressContoller extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        //
+        if($id) {
+            $addressRemove = Address::findOrFail($id)->delete();
+            if($addressRemove)
+            {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'delete item remove successfully',
+                    'data'=>session()->get('cart')
+                ], 200);
+            }
+            else
+            {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'something went wrong',
+                ], 400);
+            }
+
+        }
     }
 }
