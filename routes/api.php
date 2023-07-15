@@ -39,7 +39,7 @@ Route::get('address/show/{id}',[AddressContoller::class,'show']);
 Route::get('get-user-cart-info/{id}', [CartController::class, 'getAllCartUserData']);
 Route::post('add-to-cart/{id}', [CartController::class, 'addToCart']);
 //Route::get('add-to-cart/{id}', [CardController::class, 'addToCart']);
-Route::patch('update-cart', [CartController::class, 'update']);
+//Route::patch('update-cart', [CartController::class, 'update']);
 Route::delete('remove-from-cart/{id}', [CartController::class, 'remove']);
 
 

@@ -140,10 +140,10 @@ class CartController extends Controller
      *
      * @return response()
      */
-    public function remove(Request $request)
+    public function remove($id)
     {
-        if($request->id) {
-            $cardRemove = Cart::findOrFail($request->id)->delete();
+        if($id) {
+            $cardRemove = Cart::findOrFail($id)->delete();
            if($cardRemove)
            {
                return response()->json([
