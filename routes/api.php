@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Website\UsersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\Website\AddressContoller;
-use App\Http\Controllers\Api\Website\CardController;
+use App\Http\Controllers\Api\Website\CartController;
 use App\Http\Controllers\Api\Website\OrderController;
 /*
 |--------------------------------------------------------------------------
@@ -36,10 +36,11 @@ Route::get('address/edit/{id}',[AddressContoller::class,'edit']);
 Route::put('address/update/{id}',[AddressContoller::class,'update']);
 Route::get('address/show/{id}',[AddressContoller::class,'show']);
 
-Route::get('add-to-cart/{id}', [CardController::class, 'addToCart']);
-Route::get('add-to-cart/{id}', [CardController::class, 'addToCart']);
-Route::patch('update-cart', [CardController::class, 'update']);
-Route::delete('remove-from-cart', [CardController::class, 'remove']);
+Route::get('get-user-cart-info/{id}', [CartController::class, 'getAllCartUserData']);
+Route::post('add-to-cart/{id}', [CartController::class, 'addToCart']);
+//Route::get('add-to-cart/{id}', [CardController::class, 'addToCart']);
+Route::patch('update-cart', [CartController::class, 'update']);
+Route::delete('remove-from-cart/{id}', [CartController::class, 'remove']);
 
 
 Route::post('order/store',[OrderController::class,'store']);

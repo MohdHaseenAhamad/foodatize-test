@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api\Website;
 
 use App\Http\Controllers\Controller;
-use App\Models\Card;
+use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-class CardController extends Controller
+class CartController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,8 @@ class CardController extends Controller
      */
     public function index()
     {
-        $results = Card::all();
+        $results = Cart::all();
+
         return response()->json([
             'status' => 200,
             'message' => "card data fetch Successfully",
@@ -34,6 +35,18 @@ class CardController extends Controller
 
     }
 
+    public function getAllCartUserData($id)
+    {
+        $obj = new Cart();
+        $obj->where('user_id',$id);
+        $results= $obj->get();
+        return response()->json([
+            'status' => 200,
+            'message' => "card data fetch Successfully",
+            'data' => $results,
+        ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -41,42 +54,54 @@ class CardController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
-
-
     /**
      * Write code on Method
      *
      * @return response()
      */
-    public function addToCart($id)
+    public function addToCart(Request $request,$user_id)
     {
-        $product = Product::findOrFail($id);
-        $obj = new Card();
-        $res=Card::where('pro_id',$id)->get()->toArray();
-        if(!empty($res[0])) {
+        $product_id = $request->product_id;
+        $mode = $request->mode;
+        $product = Product::findOrFail($product_id);
+        $obj = new Cart();
+        $res=Cart::where('product_id',$product_id)->where('user_id',$user_id)->get()->toArray();
+        if(!empty($res[0]))
+        {
             $quantity = intval($res[0]['quantity']);
-            $quantity++;
-            $resp=Card::where('pro_id',$id)->update(['quantity'=>$quantity]);
+            if($mode=='add')
+            {
+                $quantity++;
+            }
+            if($mode=='subtract')
+            {
+                $quantity--;
+            }
+
+            $resp=Cart::where('product_id',$product_id)->where('user_id',$user_id)->update(['quantity'=>$quantity]);
             return response()->json([
                 'status' => 200,
                 'message' => 'update to card successfully',
-                'data'=>Card::all()
+                'item'=>Cart::totalCountProductByUser($user_id),
+                'total_price'=>Cart::totalProductPriceCountByUser($user_id),
             ], 200);
-        } else {
-            $obj->user_id = 1;
-            $obj->pro_id = $product->id;
-            $obj->name = $product->name;
+        }
+        else
+            {
+            $obj->user_id = $user_id;
+            $obj->product_id = $product->id;
             $obj->quantity = 1;
             $obj->price = $product->price;
-            $obj->image = $product->image;
             $obj->save();
+
             return response()->json([
                 'status' => 200,
                 'message' => 'add to card successfully',
-                'data'=>Card::all()
+                'item'=>Cart::totalCountProductByUser($user_id),
+                'total_price'=>Cart::totalProductPriceCountByUser($user_id),
             ], 200);
         }
+
 
     }
 
@@ -85,17 +110,19 @@ class CardController extends Controller
      *
      * @return response()
      */
-    public function update(Request $request)
+    public function update(Request $request,$user_id)
     {
-        if($request->id && $request->quantity){
+        if($request->id && $request->quantity)
+        {
             $quantity = $request->quantity;
-            $resp=Card::where('pro_id',$request->id)->update(['quantity'=>$quantity]);
+            $resp=Cart::where('pro_id',$request->id)->update(['quantity'=>$quantity]);
             if($resp)
             {
                 return response()->json([
                     'status' => 200,
                     'message' => 'card update successfully',
-                    'data'=>Card::all()
+                    'item'=>Cart::totalCountProductByUser($user_id),
+                    'total_price'=>Cart::totalProductPriceCountByUser($user_id),
                 ], 200);
             }else
             {
@@ -116,7 +143,7 @@ class CardController extends Controller
     public function remove(Request $request)
     {
         if($request->id) {
-            $cardRemove = Card::findOrFail($request->id)->delete();
+            $cardRemove = Cart::findOrFail($request->id)->delete();
            if($cardRemove)
            {
                return response()->json([
@@ -124,7 +151,8 @@ class CardController extends Controller
                    'message' => 'card item remove successfully',
                    'data'=>session()->get('cart')
                ], 200);
-           }else
+           }
+           else
            {
                return response()->json([
                    'status' => 400,

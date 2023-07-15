@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Website;
 
 use App\Http\Controllers\Controller;
-use App\Models\Card;
+use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
@@ -38,19 +38,19 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+
         $obj = new Order();
-        $obj->order_number = 'FDT-'.strtoupper(uniqid());
+        $obj->order_number = '#FDT'.strtoupper(uniqid());
         $obj->user_id = $request->user_id;
         $obj->status = 'pending';
         $obj->grand_total =$request->grand_total;
         $obj->item_count = $request->item_count;
-//        $obj->save();
         $obj->adb_id = $request->adb_id;
         $obj->payment_status =0;
         $obj->payment_method = null;
         if($obj->save())
         {
-            $items = Card::where('user_id',$request->user_id)->get();
+            $items = Cart::where('user_id',$request->user_id)->get();
             foreach ($items as $item)
             {
                 $orderItem = new OrderItem();
@@ -64,7 +64,7 @@ class OrderController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'add to card successfully',
-            'data'=>Card::all()
+            'data'=>Cart::all()
         ], 200);
     }
 
