@@ -37,9 +37,11 @@ class OrderController extends Controller {
         $cart_ids = Cart::getOnlyCartIds($request->user_id);
 //        $total_items = Cart::totalCountProductByUser($user_id);
         $total_item_price = Cart::totalProductPriceCountByUser($user_id);
-        dd($total_item_price);
-        $gst_per = (100 / $total_item_price) * 18;
-        $km_price = $this->getPrice(Address::getOnlyCartIds($user_id,$address_id));
+//dd($total_item_price);
+        $gst_per = (intval($total_item_price) * 18 ) / 100;
+//        dd($gst_per);
+        $km=Address::getKmInUserAddress($user_id,$address_id);
+        $km_price = $this->getPrice($km);
         $to_pay = $total_item_price + $gst_per +$km_price;
 
 

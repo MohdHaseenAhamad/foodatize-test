@@ -86,8 +86,7 @@ class CartController extends Controller
                 'total_price'=>Cart::totalProductPriceCountByUser($user_id),
             ], 200);
         }
-        else
-            {
+        else {
             $obj->user_id = $user_id;
             $obj->product_id = $product->id;
             $obj->quantity = 1;

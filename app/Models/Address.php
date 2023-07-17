@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Address extends Model
 {
@@ -20,9 +21,9 @@ class Address extends Model
         'recieving_person_mobile_number',
     ];
 
-    public function getOnlyCartIds($user_id,$address_id)
+    public function getKmInUserAddress($user_id,$address_id)
     {
-        $data = Address::select(DB::raw("km"))->where('user_id',$user_id)->where('id',$address_id)->get();
-        return $data;
+        $data = Address::select(DB::raw("km"))->where('user_id',$user_id)->where('id',$address_id)->get()->toArray();
+        return $data[0]['km'];
     }
 }
