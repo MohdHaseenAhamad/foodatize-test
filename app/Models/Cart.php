@@ -22,4 +22,10 @@ class Cart extends Model
         $data = Cart::select(DB::raw("SUM(price*quantity) as total_count"))->where('user_id',$user_id)->get();
         return $data;
     }
+
+    public function getOnlyCartIds($user_id)
+    {
+        $data = Cart::select(DB::raw(" GROUP_CONCAT(id)"))->where('user_id',$user_id)->get();
+        return $data;
+    }
 }

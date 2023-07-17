@@ -43,8 +43,11 @@ Route::post('add-to-cart/{id}', [CartController::class, 'addToCart']);
 Route::delete('remove-from-cart/{id}', [CartController::class, 'remove']);
 
 
-Route::post('order/store',[OrderController::class,'store']);
+Route::post('checkout',[OrderController::class,'store']);
+
+//Route::post('select-payment-method',[OrderController::class,'selectPaymentMethod']);
 Route::post('get-price',[AddressContoller::class,'getPrice']);
+
 //Route::get('student',[::class,'index']);
 //Route::get('student/show/{id}',[UserController::class,'show']);
 //Route::put('student/update/{id}',[UserController::class,'update']);

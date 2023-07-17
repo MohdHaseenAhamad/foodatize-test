@@ -92,6 +92,7 @@ class CartController extends Controller
             $obj->product_id = $product->id;
             $obj->quantity = 1;
             $obj->price = $product->price;
+            $obj->status = 0;
             $obj->save();
 
             return response()->json([

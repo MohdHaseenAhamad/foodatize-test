@@ -139,4 +139,131 @@ if($pro->save())
             'data' => $pro->get(),
         ], 200);
     }
+    public function productCheckerForPrice($user_id)
+    {
+        $cartItem=Cart::where('user_id',$user_id)->get()->toArray();
+        $productUpdatePriceCounter = 0;
+        $updateCartIds = array();
+        $productName = array();
+        foreach($cartItem as $item)
+        {
+            $productItem=Product::where('id',$item['product_id'])->get()->toArray();
+            // dd($productItem);
+            if(intVal($productItem[0]['price']) == intVal($item['price']))
+            {
+
+            }
+            else
+            {
+                $res=Cart::where('user_id',$user_id)->where('product_id',$productItem[0]['id'])->update(['price'=>$productItem[0]['price']]);
+                if(!empty($res))
+                {
+                    $productUpdatePriceCounter++;
+                    $productName[] = $productItem[0]['name'];
+                    $updateCartIds[] = $item['id'];
+                }
+
+
+            }
+        }
+        if($productUpdatePriceCounter > 0)
+        {
+            $massage = "";
+            if($productUpdatePriceCounter > 1)
+            {
+                $massage = $productName[0]." & ".($productUpdatePriceCounter-1)." other item price has been updates";
+            }
+            else
+            {
+                $massage = $productName[0]." item price has been updates";
+            }
+            return response()->json([
+                'response' => 1,
+                'message' => $massage,
+                'update_product_ids' => implode(',',$updateCartIds),
+            ], 200);
+        }
+        else
+        {
+            return response()->json([
+                'response' => 0,
+                'message' => "fetch all item Successfully",
+                'update_product_ids' => '',
+            ], 200);
+        }
+    }
+    public function productCheckerForQty($user_id)
+    {
+        $cartItem=Cart::where('user_id',$user_id)->get()->toArray();
+        $productUpdateQtyCounter = 0;
+        $updateCartIds = array();
+        $productName = array();
+        $productNameForLessThenQuantity = array();
+        $productUpdateQtyCounterForLessThenQuantity = 0;
+        foreach($cartItem as $item)
+        {
+            $productItem=Product::where('id',$item['product_id'])->get()->toArray();
+            // dd($productItem);
+            if(intVal($productItem[0]['quantity']) < intVal($item['quantity']) && intVal($productItem[0]['quantity']) !=0)
+            {
+                $res=Cart::where('user_id',$user_id)->where('product_id',$productItem[0]['id'])->update(['quantity'=>$productItem[0]['quantity']]);
+                if(!empty($res))
+                {
+                    $productUpdateQtyCounterForLessThenQuantity++;
+                    $productNameForLessThenQuantity[] = $productItem[0]['name'];
+                    $updateCartIds[] = $item['id'];
+                }
+            }
+            else if(intVal($productItem[0]['quantity']) == 0)
+            {
+                $res=Cart::where('user_id',$user_id)->where('product_id',$productItem[0]['id'])->update(['quantity'=>0]);
+                if(!empty($res))
+                {
+                    $productUpdateQtyCounter++;
+                    $productName[] = $productItem[0]['name'];
+                    $updateCartIds[] = $item['id'];
+                }
+            }
+            else
+            {
+
+            }
+        }
+        if($productUpdateQtyCounter > 0 || $productUpdateQtyCounterForLessThenQuantity > 0)
+        {
+            $massage1 = "";
+            $massage2 = "";
+            $massage = array();
+            if($productUpdateQtyCounter > 1)
+            {
+                $massage1 = $productName[0]." & ".($productUpdateQtyCounter-1)." other items price are out of stock";
+            }
+            else
+            {
+                // $massage1 = $productName[0]." item is out of stock";
+            }
+
+            if($productUpdateQtyCounterForLessThenQuantity > 1)
+            {
+                $massage2 = $productNameForLessThenQuantity[0]." & ".($productUpdateQtyCounterForLessThenQuantity-1)." other items price are out of stock";
+            }
+            else
+            {
+                // $massage2 = $productNameForLessThenQuantity[0]." item is out of stock";
+            }
+            $massage = [$massage1,$massage2];
+            return response()->json([
+                'response' => 1,
+                'message' => $massage,
+                'update_product_ids' => implode(',',$updateCartIds),
+            ], 200);
+        }else
+        {
+            return response()->json([
+                'response' => 0,
+                'message' => "fetch all item Successfully",
+                'update_product_ids' => '',
+            ], 200);
+        }
+    }
 }

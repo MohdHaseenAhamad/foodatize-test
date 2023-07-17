@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2023 at 03:54 PM
+-- Generation Time: Jul 17, 2023 at 09:38 AM
 -- Server version: 10.4.16-MariaDB
 -- PHP Version: 7.4.12
 
@@ -149,11 +149,12 @@ CREATE TABLE `orders` (
   `user_id` int(11) NOT NULL,
   `status` enum('pending','processing','completed','decline') NOT NULL DEFAULT 'pending',
   `address_id` bigint(20) DEFAULT NULL,
+  `gst` double DEFAULT NULL,
   `payment_status` int(11) DEFAULT NULL,
   `payment_method` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `order_time` time DEFAULT NULL,
+  `order_time` datetime DEFAULT NULL,
   `transaction_number` varchar(255) DEFAULT NULL,
   `final_amount` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -216,6 +217,7 @@ CREATE TABLE `product` (
   `image` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pieces` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `price` bigint(20) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
   `description` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(4) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -226,11 +228,11 @@ CREATE TABLE `product` (
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `name`, `image`, `pieces`, `price`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Chicken Chilli - Boneless', '1689416653.png', '12', 210, 'One plate Chicken Chili Bonless with 12 pcs of chicken hot fried.\nFrshly Brewed and Serverd', NULL, '2023-07-15 04:54:13', '2023-07-15 04:54:13'),
-(2, 'Chicken Chilli - Boneless 2', '1689416675.png', '14', 240, 'One plate Chicken Chili Bonless with 12 pcs of chicken hot fried.\nFrshly Brewed and Serverd', NULL, '2023-07-15 04:54:35', '2023-07-15 04:54:35'),
-(3, 'Chicken Chilli - Boneless 3', '1689416682.png', '14', 240, 'One plate Chicken Chili Bonless with 12 pcs of chicken hot fried.\nFrshly Brewed and Serverd', NULL, '2023-07-15 04:54:42', '2023-07-15 04:54:42'),
-(4, 'Chicken Chilli - Boneless 4', '1689416700.png', '14', 240, 'One plate Chicken Chili Bonless with 12 pcs of chicken hot fried.\nFrshly Brewed and Serverd', NULL, '2023-07-15 04:55:00', '2023-07-15 04:55:00');
+INSERT INTO `product` (`id`, `name`, `image`, `pieces`, `price`, `quantity`, `description`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Chicken Chilli - Boneless', '1689416653.png', '12', 210, 2, 'One plate Chicken Chili Bonless with 12 pcs of chicken hot fried.\nFrshly Brewed and Serverd', NULL, '2023-07-15 04:54:13', '2023-07-15 04:54:13'),
+(2, 'Chicken Chilli - Boneless 2', '1689416675.png', '14', 240, 4, 'One plate Chicken Chili Bonless with 12 pcs of chicken hot fried.\nFrshly Brewed and Serverd', NULL, '2023-07-15 04:54:35', '2023-07-15 04:54:35'),
+(3, 'Chicken Chilli - Boneless 3', '1689416682.png', '14', 240, 6, 'One plate Chicken Chili Bonless with 12 pcs of chicken hot fried.\nFrshly Brewed and Serverd', NULL, '2023-07-15 04:54:42', '2023-07-15 04:54:42'),
+(4, 'Chicken Chilli - Boneless 4', '1689416700.png', '14', 240, 7, 'One plate Chicken Chili Bonless with 12 pcs of chicken hot fried.\nFrshly Brewed and Serverd', NULL, '2023-07-15 04:55:00', '2023-07-15 04:55:00');
 
 -- --------------------------------------------------------
 
