@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 17, 2023 at 09:38 AM
+-- Generation Time: Jul 17, 2023 at 03:14 PM
 -- Server version: 10.4.16-MariaDB
 -- PHP Version: 7.4.12
 
@@ -41,6 +41,14 @@ CREATE TABLE `address` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `address`
+--
+
+INSERT INTO `address` (`id`, `user_id`, `longitude`, `latitude`, `km`, `full_address`, `pincode`, `recieving_person`, `recieving_person_mobile_number`, `created_at`, `updated_at`) VALUES
+(1, 1, '13', '35', 13, '23 Block', 208034, 'Mohd Hassen', '7709589697', NULL, '2023-07-17 06:54:53'),
+(2, 1, '13', '35', NULL, '23 Block', 208034, 'Mohd Hassen', '7309678645', '2023-07-17 06:49:11', '2023-07-17 06:49:11');
+
 -- --------------------------------------------------------
 
 --
@@ -63,8 +71,8 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `user_id`, `product_id`, `price`, `quantity`, `status`, `created_at`, `updated_at`) VALUES
-(2, 1, 3, 240, 1, NULL, '2023-07-15 05:34:11', '2023-07-15 05:34:11'),
-(3, 1, 4, 240, 5, NULL, '2023-07-15 06:29:33', '2023-07-15 07:07:02');
+(2, 1, 3, 240, 1, 1, '2023-07-15 05:34:11', '2023-07-17 05:32:42'),
+(4, 2, 2, 230, 1, 0, '2023-07-17 06:40:14', '2023-07-17 07:33:20');
 
 -- --------------------------------------------------------
 
@@ -159,6 +167,13 @@ CREATE TABLE `orders` (
   `final_amount` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `order_number`, `cart_ids`, `user_id`, `status`, `address_id`, `gst`, `payment_status`, `payment_method`, `created_at`, `updated_at`, `order_time`, `transaction_number`, `final_amount`) VALUES
+(3, '#FDT64B51FD268B05', '2,3', 1, 'pending', 1, 18, 0, NULL, '2023-07-17 05:32:42', '2023-07-17 05:32:42', '2023-07-17 11:02:42', NULL, 1714.2);
+
 -- --------------------------------------------------------
 
 --
@@ -230,7 +245,7 @@ CREATE TABLE `product` (
 
 INSERT INTO `product` (`id`, `name`, `image`, `pieces`, `price`, `quantity`, `description`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Chicken Chilli - Boneless', '1689416653.png', '12', 210, 2, 'One plate Chicken Chili Bonless with 12 pcs of chicken hot fried.\nFrshly Brewed and Serverd', NULL, '2023-07-15 04:54:13', '2023-07-15 04:54:13'),
-(2, 'Chicken Chilli - Boneless 2', '1689416675.png', '14', 240, 4, 'One plate Chicken Chili Bonless with 12 pcs of chicken hot fried.\nFrshly Brewed and Serverd', NULL, '2023-07-15 04:54:35', '2023-07-15 04:54:35'),
+(2, 'Chicken Chilli - Boneless 2', '1689416675.png', '14', 230, 1, 'One plate Chicken Chili Bonless with 12 pcs of chicken hot fried.\nFrshly Brewed and Serverd', NULL, '2023-07-15 04:54:35', '2023-07-15 04:54:35'),
 (3, 'Chicken Chilli - Boneless 3', '1689416682.png', '14', 240, 6, 'One plate Chicken Chili Bonless with 12 pcs of chicken hot fried.\nFrshly Brewed and Serverd', NULL, '2023-07-15 04:54:42', '2023-07-15 04:54:42'),
 (4, 'Chicken Chilli - Boneless 4', '1689416700.png', '14', 240, 7, 'One plate Chicken Chili Bonless with 12 pcs of chicken hot fried.\nFrshly Brewed and Serverd', NULL, '2023-07-15 04:55:00', '2023-07-15 04:55:00');
 
@@ -261,7 +276,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `phone_number`, `phone_otp`, `phone_otp_time`, `phone_status`, `email`, `email_otp`, `email_otp_time`, `email_status`, `token`, `created_at`, `updated_at`) VALUES
-(1, 'Hassen1', '7309589697', '123456', NULL, 0, 'happygassem0786@gmail.com', NULL, NULL, NULL, NULL, '2023-07-12 06:19:47', '2023-07-15 04:42:25');
+(1, 'Hassen1', '7309589697', '123456', NULL, 0, 'happygassem0786@gmail.com', NULL, NULL, NULL, NULL, '2023-07-12 06:19:47', '2023-07-15 04:42:25'),
+(2, 'Aman Khan', '7309589690', '13034', NULL, 1, 'happyhassen1786@gmail.com', NULL, NULL, NULL, '61507b74906851f48b0a63455555a7d71380f4cc4d81bf8c99da33b14ab5c85d', '2023-07-17 05:42:24', '2023-07-17 06:18:51');
 
 --
 -- Indexes for dumped tables
@@ -347,13 +363,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -377,7 +393,7 @@ ALTER TABLE `order`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `orders_items`
@@ -401,7 +417,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
