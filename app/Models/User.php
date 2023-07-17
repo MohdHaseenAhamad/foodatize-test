@@ -73,7 +73,17 @@ class User extends Authenticatable implements JWTSubject {
     }
 
     public function otpVerification($request) {
-        $result = User::where('phone_number', '=', $request['phone_number'])->where('phone_otp', '=', $request['phone_otp'])->get();
+        $result = User::where('phone_number', '=', $request['phone_number'])->where('phone_otp', '=', $request['phone_otp'])->get()->toArray();
+
+        if (count($result) > 0) {
+
+            return $result;
+        }
+        return false;
+    }
+    public function updateUserStatus($request,$data) {
+        $result = User::where('phone_number', '=', $request['phone_number'])->where('phone_otp', '=', $request['phone_otp'])->get()->toArray();
+
         if (count($result) > 0) {
             return $result;
         }

@@ -57,11 +57,12 @@ class UsersController extends Controller {
             $data = [
                 'phone_number'=>$request->phone_number,
                 'phone_otp'=>mt_rand(10000, 99999),
+                'phone_otp_time'=>date('Y-m-d H:i:s'),
             ];
             $result = User::createUser($data);
             $formateData = new UserResource($result['data']);
             if (!empty($result)) {
-                return response()->json(['status' => 200, 'massage' => '', 'data' => $formateData, 'user_type' => $result['user_type']], 200);
+                return response()->json(['status' => 200, 'massage' => 'user registration successfully.', 'data' => $formateData, 'user_type' => $result['user_type']], 200);
             } else {
                 return response()->json([
                     'status' => 400,
@@ -76,7 +77,7 @@ class UsersController extends Controller {
     public function otpVerification(Request $request) {
 
         $validator = validator::make($request->all(), [
-            'phone_otp' => ['required', 'min:6', 'max:6'],
+            'phone_otp' => ['required', 'min:5', 'max:5'],
             'phone_number' => ['required', 'min:10', 'max:10'],
         ], [
             'required' => ':attribute is required.',
@@ -90,9 +91,10 @@ class UsersController extends Controller {
                 'message' => $validator->messages(),
             ], 400);
         } else {
-            $results = User::otpVerification($request->all());
-            if (!empty($retval)) {
+            $results= User::otpVerification($request->all());
+            if (count($results) > 0) {
                 $token = hash('sha256', $plainTextToken = Str::random(40));
+                $status = User::where('phone_number', '=', $request->phone_number)->where('phone_otp', '=', $request->phone_otp)->update(['phone_status'=>1,'token'=>$token]);
                 return response()->json([
                     'access_token' => $token,
                     'status' => 200, 'massage' => 'user verification is successfully', 'data' => $results,
@@ -101,7 +103,7 @@ class UsersController extends Controller {
             } else {
                 return response()->json([
                     'status' => 400,
-                    'message' => 'something went wrong',
+                    'message' => 'user verification otp not match',
                 ], 400);
             }
 

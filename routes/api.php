@@ -23,11 +23,14 @@ use App\Http\Controllers\Api\Website\OrderController;
 //    Route::post('user/profile',[UserController::class,'profile']);
 //});
 
+/* Testing Done Start */
 Route::post('user/register-users',[UsersController::class,'registerUsers']);
 Route::post('user/otp-verification',[UsersController::class,'otpVerification']);
 Route::put('user/save-basic-info/{id}',[UsersController::class,'saveBasicInfo']);
+/* Testing End */
 
-Route::post('product',[ProductController::class,'index']);
+
+Route::get('product',[ProductController::class,'index']);
 Route::post('product/store',[ProductController::class,'store']);
 Route::post('product/search', [ProductController::class,'filter']);
 
@@ -44,8 +47,8 @@ Route::delete('remove-from-cart/{id}', [CartController::class, 'remove']);
 
 
 Route::post('checkout',[OrderController::class,'store']);
-Route::post('product-checker-for-price',[OrderController::class,'productCheckerForPrice']);
-Route::post('product-checker-for-qty',[OrderController::class,'productCheckerForQty']);
+Route::get('product-checker-for-price/{id}',[OrderController::class,'productCheckerForPrice']);
+Route::get('product-checker-for-qty/{id}',[OrderController::class,'productCheckerForQty']);
 
 //Route::post('select-payment-method',[OrderController::class,'selectPaymentMethod']);
 Route::post('get-price',[AddressContoller::class,'getPrice']);
