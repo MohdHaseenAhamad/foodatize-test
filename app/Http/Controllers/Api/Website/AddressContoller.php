@@ -121,6 +121,7 @@ class AddressContoller extends Controller {
                 'longitude' => $request->longitude,
                 'latitude' => $request->latitude,
                 'full_address' =>$request->full_address,
+                'km'=>$request->km,
                 'pincode' => $request->pincode,
                 'recieving_person' =>$request->recieving_person ,
                 'recieving_person_mobile_number' => $request->recieving_person_mobile_number,
