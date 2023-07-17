@@ -19,4 +19,10 @@ class Address extends Model
         'recieving_person',
         'recieving_person_mobile_number',
     ];
+
+    public function getOnlyCartIds($user_id,$address_id)
+    {
+        $data = Address::select(DB::raw("km"))->where('user_id',$user_id)->where('id',$address_id)->get();
+        return $data;
+    }
 }
