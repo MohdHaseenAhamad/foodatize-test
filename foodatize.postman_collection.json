@@ -1,0 +1,628 @@
+{
+	"info": {
+		"_postman_id": "80a0e5c8-fed6-4fd2-8a7c-ff64e45d037d",
+		"name": "foodatize",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27933897"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "register-users",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone_number",
+									"value": "7786805643",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/user/register-users",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"user",
+								"register-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "otp-verification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone_number",
+									"value": "7786805643",
+									"type": "text"
+								},
+								{
+									"key": "phone_otp",
+									"value": "55450",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/user/register-users",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"user",
+								"register-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save-basic-info",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Mohd Sameer",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "happysameer@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "_method",
+									"value": "PUT",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/user/save-basic-info/5",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"user",
+								"save-basic-info",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "product",
+			"item": [
+				{
+					"name": "fetch-product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/product",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search-product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Chill",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/product/search",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"product",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cart",
+			"item": [
+				{
+					"name": "add-to-cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "product_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "user_id",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "mode",
+									"value": "add",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/add-to-cart/5",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"add-to-cart",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "subtract-to-cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "product_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "mode",
+									"value": "subtract",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/add-to-cart/5",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"add-to-cart",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove-cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/remove-from-cart/5",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"remove-from-cart",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "address",
+			"item": [
+				{
+					"name": "add-address",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "longitude",
+									"value": "24° 59' N",
+									"type": "text"
+								},
+								{
+									"key": "latitude",
+									"value": "83° 02' E",
+									"type": "text"
+								},
+								{
+									"key": "km",
+									"value": "180",
+									"type": "text"
+								},
+								{
+									"key": "full_address",
+									"value": "22-BLock",
+									"type": "text"
+								},
+								{
+									"key": "pincode",
+									"value": "208014",
+									"type": "text"
+								},
+								{
+									"key": "recieving_person",
+									"value": "Sameer",
+									"type": "text"
+								},
+								{
+									"key": "recieving_person_mobile_number",
+									"value": "7744338844",
+									"type": "text"
+								},
+								{
+									"key": "user_id",
+									"value": "5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/address/store",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"address",
+								"store"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit-address",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "full_address",
+									"value": "23-Block",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "latitude",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "km",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/address/edit/3",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"address",
+								"edit",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-address",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "full_address",
+									"value": "23-Block",
+									"type": "text"
+								},
+								{
+									"key": "_method",
+									"value": "PUT",
+									"type": "text"
+								},
+								{
+									"key": "km",
+									"value": "24",
+									"type": "text"
+								},
+								{
+									"key": "longitude",
+									"value": "24° 59' N",
+									"type": "text"
+								},
+								{
+									"key": "latitude",
+									"value": "83° 02' E",
+									"type": "text"
+								},
+								{
+									"key": "pincode",
+									"value": "208945",
+									"type": "text"
+								},
+								{
+									"key": "recieving_person",
+									"value": "Sameer",
+									"type": "text"
+								},
+								{
+									"key": "recieving_person_mobile_number",
+									"value": "7607354951",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/address/update/3",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"address",
+								"update",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-address",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/address/delete/3",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"address",
+								"delete",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "orders",
+			"item": [
+				{
+					"name": "checkout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "address_id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/checkout",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"checkout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "validate-api",
+			"item": [
+				{
+					"name": "product-checker-for-price",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/product-checker-for-price/5",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"product-checker-for-price",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product-checker-for-qty",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://cms.cybertize.in/foodDeliveryProject/public/api/product-checker-for-qty/5",
+							"protocol": "https",
+							"host": [
+								"cms",
+								"cybertize",
+								"in"
+							],
+							"path": [
+								"foodDeliveryProject",
+								"public",
+								"api",
+								"product-checker-for-qty",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

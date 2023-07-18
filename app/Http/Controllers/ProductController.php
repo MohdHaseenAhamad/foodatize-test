@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use JD\Cloudder\Facades\Cloudder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+
+
 class ProductController extends Controller
 {
     /**
@@ -58,10 +61,11 @@ class ProductController extends Controller
                 'message' => $validator->messages(),
             ], 400);
         } else {
-            $imageName = time().'.'.$request->image->extension();
-
+//            $imageName = time().'.'.$request->image->extension();
+            $imageName = $request->file('image')->getRealPath();
+            Cloudder::upload($imageName, null);
             // Public Folder
-            $request->image->move(public_path('images'), $imageName);
+//            $request->image->move(public_path('images'), $imageName);
             $pro = new Product();
             $pro->name = $request->name;
             $pro->image = $imageName;

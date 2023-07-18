@@ -74,7 +74,7 @@ class OrderController extends Controller {
 
             return response()->json([
                 'status' => 200,
-                'message' => 'add to card successfully',
+                'message' => 'checkout successfully.',
                 'data' => $data
             ], 200);
         }

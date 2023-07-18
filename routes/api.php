@@ -38,6 +38,7 @@ Route::post('address/store',[AddressContoller::class,'store']);
 Route::get('address/edit/{id}',[AddressContoller::class,'edit']);
 Route::put('address/update/{id}',[AddressContoller::class,'update']);
 Route::get('address/show/{id}',[AddressContoller::class,'show']);
+Route::delete('address/delete/{id}',[AddressContoller::class,'destroy']);
 
 Route::get('get-user-cart-info/{id}', [CartController::class, 'getAllCartUserData']);
 Route::post('add-to-cart/{id}', [CartController::class, 'addToCart']);

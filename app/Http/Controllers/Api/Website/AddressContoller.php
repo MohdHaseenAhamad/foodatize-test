@@ -179,7 +179,7 @@ class AddressContoller extends Controller {
             {
                 return response()->json([
                     'status' => 200,
-                    'message' => 'delete item remove successfully',
+                    'message' => 'delete address successfully',
                     'data'=>session()->get('cart')
                 ], 200);
             }
