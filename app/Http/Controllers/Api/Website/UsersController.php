@@ -199,7 +199,7 @@ class UsersController extends Controller {
         {
             $data = [
                 'name'=>$request->name,
-                'email'=>$request->name,
+                'email'=>$request->email,
                 'phone_number'=>$request->phone_number,
             ];
             if($request->phone_number == $request->phone_number_old)
@@ -231,7 +231,8 @@ class UsersController extends Controller {
                         'status' => 202,
                         'message' => 'user information not found.',
                     ], 202);
-                }else
+                }
+                else
                 {
                     return response()->json([
                         'status' => 400,

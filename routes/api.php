@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\Website\OrderController;
 Route::post('user/register-users',[UsersController::class,'registerUsers']);
 Route::post('user/otp-verification',[UsersController::class,'otpVerification']);
 Route::put('user/save-basic-info/{id}',[UsersController::class,'saveBasicInfo']);
+Route::put('user/update/{id}',[UsersController::class,'update']);
 /* Testing End */
 
 
