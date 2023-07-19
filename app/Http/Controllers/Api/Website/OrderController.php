@@ -96,12 +96,28 @@ class OrderController extends Controller {
         }
     }
 
-    public function selectPaymentMethod(Request $request)
+    public function selectPaymentMethod(Request $request,$orderId)
     {
-//        $data = [
-//            'payment_method'=>$request->payment_method,
-//            'payment_method'=>$request->payment_method,
-//        ];
+        $data = [
+            'payment_method'=>$request->payment_method,
+        ];
+       $response = Order::where('id',$orderId)->update($data);
+       if($response)
+       {
+           return response()->json([
+               'status' => 200,
+               'message' => 'payment method select successfully.',
+               'data' => $data
+           ], 200);
+       }
+       else
+       {
+           return response()->json([
+               'status' => 400,
+               'message' => 'payment method select successfully.',
+               'data' => $data
+           ], 400);
+       }
     }
 
     /**
@@ -180,15 +196,15 @@ class OrderController extends Controller {
                 $massage = $productName[0]." item price has been updates";
             }
             return response()->json([
-                'response' => 1,
+                'status' => 400,
                 'message' => $massage,
                 'update_product_ids' => implode(',',$updateCartIds),
-            ], 200);
+            ], 400);
         }
         else
         {
             return response()->json([
-                'response' => 0,
+                'status' => 200,
                 'message' => "fetch all item Successfully",
                 'update_product_ids' => '',
             ], 200);
@@ -272,7 +288,7 @@ class OrderController extends Controller {
         }else
         {
             return response()->json([
-                'response' => 200,
+                'status' => 200,
                 'message' => "fetch all item Successfully",
                 'update_product_ids' => '',
             ], 200);

@@ -152,6 +152,17 @@ class UsersController extends Controller {
      */
     public function show($id) {
 
+       $user_info = User::where('id',$id)->get();
+       if(!empty($user_info))
+       {
+           return response()->json(['status' => 200, 'message' => 'user information found.', 'data' => $user_info], 200);
+       }else
+       {
+           return response()->json([
+               'status' => 400,
+               'message' => 'user information not found.',
+           ], 400);
+       }
     }
 
     /**
@@ -170,7 +181,66 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+        $validator = validator::make($request->all(), [
+            'name' => ['required', 'min:2', 'max:100'],
+            'email' => ['required', 'email', 'max:100'],
+            'phone_number' => ['required', 'min:10', 'max:10'],
+        ], [
+            'required' => ':attribute is required.',
+            'min' => 'Please enter at least :min characters',
+            'max' => 'Please enter less then :max characters',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'message' => $validator->messages(),
+            ], 400);
+        }else
+        {
+            $data = [
+                'name'=>$request->name,
+                'email'=>$request->name,
+                'phone_number'=>$request->phone_number,
+            ];
+            if($request->phone_number == $request->phone_number_old)
+            {
+              $retVal = User::where('id',$id)->update($data);
+              if($retVal)
+              {
+                  return response()->json([
+                      'status' => 200,
+                      'message' => 'user information not found.',
+                      'data'=>User::where('id',$id)->get(),
+                  ], 200);
+              }
+              else
+              {
+                  return response()->json([
+                      'status' => 400,
+                      'message' => 'user information not found.',
+                  ], 400);
+              }
+            }else
+            {
+                $data['phone_otp'] = mt_rand(10000, 99999);
+                $data['phone_otp_time'] =  date('Y-m-d H:i:s');
+                $retVal = User::where('id',$id)->update($data);
+                if($retVal)
+                {
+                    return response()->json([
+                        'status' => 202,
+                        'message' => 'user information not found.',
+                    ], 202);
+                }else
+                {
+                    return response()->json([
+                        'status' => 400,
+                        'message' => 'user information not found.',
+                    ], 400);
+                }
+            }
+        }
+
     }
 
     /**
