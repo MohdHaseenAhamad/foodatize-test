@@ -94,7 +94,14 @@ class UsersController extends Controller {
             $results= User::otpVerification($request->all());
             if (count($results) > 0) {
                 $token = hash('sha256', $plainTextToken = Str::random(40));
-                $status = User::where('phone_number', '=', $request->phone_number)->where('phone_otp', '=', $request->phone_otp)->update(['phone_status'=>1,'token'=>$token]);
+                $data = [
+                    'phone_otp'=>mt_rand(10000, 99999),
+                    'phone_otp_time'=>date('Y-m-d H:i:s'),
+                    'phone_status'=>1,
+                    'token'=>$token
+                ];
+                $status = User::where('phone_number', '=', $request->phone_number)->where('phone_otp', '=', $request->phone_otp)->update($data);
+                $results = User::where('phone_number', '=', $request->phone_number)->where('phone_otp', '=', $request->phone_otp)->get();
                 return response()->json([
                     'access_token' => $token,
                     'status' => 200, 'massage' => 'user verification is successfully', 'data' => $results,
@@ -109,8 +116,35 @@ class UsersController extends Controller {
 
         }
     }
+    public function reSendOTP(Request $request)
+    {
+        $token = hash('sha256', $plainTextToken = Str::random(40));
+        $data = [
+            'phone_otp'=>mt_rand(10000, 99999),
+            'phone_otp_time'=>date('Y-m-d H:i:s'),
+            'phone_status'=>0,
+            'token'=>$token
+        ];
+        $status = User::where('phone_number', '=', $request->phone_number)->update($data);
+        if($status)
+        {
+            $results = User::where('phone_number', '=', $request->phone_number)->get();
+            return response()->json([
+                'access_token' => $token,
+                'status' => 200, 'massage' => 'user verification is successfully', 'data' => $results,
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 400,
+                'message' => 'user verification otp not send please try again',
+            ], 400);
+        }
+    }
 
-    public function saveBasicInfo(Request $request, $id) {
+    public function saveBasicInfo(Request $request, $id)
+    {
         $validator = validator::make($request->all(), [
             'name' => ['required', 'min:2', 'max:100'],
             'email' => ['required', 'email', 'max:100'],
