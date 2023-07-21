@@ -50,6 +50,7 @@ Route::delete('remove-from-cart/{id}', [CartController::class, 'remove']);
 
 
 Route::post('checkout',[OrderController::class,'store']);
+Route::post('select-payment-method/{id}',[OrderController::class,'selectPaymentMethod']);
 Route::get('product-checker-for-price/{id}',[OrderController::class,'productCheckerForPrice']);
 Route::get('product-checker-for-qty/{id}',[OrderController::class,'productCheckerForQty']);
 

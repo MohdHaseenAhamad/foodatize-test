@@ -58,9 +58,9 @@ class OrderController extends Controller {
         $obj->payment_method = null;
         $obj->save();
         if ($obj->save()) {
-            foreach (explode(',', $cart_ids) as $cart_id) {
-                Cart::where('user_id', $user_id)->where('id', $cart_id)->update(['status' => 1]);
-            }
+//            foreach (explode(',', $cart_ids) as $cart_id) {
+//                Cart::where('user_id', $user_id)->where('id', $cart_id)->update(['status' => 1]);
+//            }
             $data = [
                 'item_total' => $total_item_price,
                 'gst' => 18,
@@ -96,7 +96,7 @@ class OrderController extends Controller {
     public function selectPaymentMethod(Request $request,$orderId)
     {
         $data = [
-            'payment_method'=>$request->payment_method,
+            'payment_method'=>101,
         ];
        $response = Order::where('id',$orderId)->update($data);
        if($response)
@@ -104,7 +104,7 @@ class OrderController extends Controller {
            return response()->json([
                'status' => 200,
                'message' => 'payment method select successfully.',
-               'data' => $data
+               'data' => Order::where('id',$orderId)->get()
            ], 200);
        }
        else
@@ -115,6 +115,11 @@ class OrderController extends Controller {
                'data' => $data
            ], 400);
        }
+    }
+
+    public function finallyCheckout(Request $request)
+    {
+
     }
 
     /**
