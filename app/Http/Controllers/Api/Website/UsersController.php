@@ -243,7 +243,7 @@ class UsersController extends Controller {
               {
                   return response()->json([
                       'status' => 200,
-                      'message' => 'user information not found.',
+                      'message' => 'user information is successfully update.',
                       'data'=>User::where('id',$id)->get(),
                   ], 200);
               }
@@ -254,7 +254,8 @@ class UsersController extends Controller {
                       'message' => 'user information not found.',
                   ], 400);
               }
-            }else
+            }
+            else
             {
                 $data['phone_otp'] = mt_rand(10000, 99999);
                 $data['phone_otp_time'] =  date('Y-m-d H:i:s');
