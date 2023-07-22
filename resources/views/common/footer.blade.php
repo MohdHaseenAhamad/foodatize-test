@@ -2225,7 +2225,7 @@
         <!-- End Double Header -->
     </div>
 </div>
-
+@livewireScripts
 <script src="{{asset('assets/js/demo.js')}}"></script>
 
 <!-- END ONLY DEV -->
@@ -3188,7 +3188,7 @@
 <script src="{{asset('assets/js/hs.theme-appearance-charts.js')}}"></script>
 
 
-@livewireScripts
+
 <!-- End Style Switcher JS -->
 </body>
 

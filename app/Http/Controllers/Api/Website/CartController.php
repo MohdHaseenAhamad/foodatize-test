@@ -6,13 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller {
     /**
      * Display a listing of the resource.
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
 //        $results = Cart::all();
 //
 //        return response()->json([
@@ -26,14 +28,16 @@ class CartController extends Controller {
      * Show the form for creating a new resource.
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
 
     }
 
     public function getAllCartUserData($id) {
-        $obj = new Cart();
-        $obj->where('user_id', $id);
-        $results = $obj->get();
+        $results = DB::table('cart')
+            ->join('product', 'cart.product_id', '=', 'product.id')
+                ->select('cart.*','product.name','product.pieces','product.image')
+            ->get();
         return response()->json([
             'status' => 200,
             'message' => "card data fetch Successfully",

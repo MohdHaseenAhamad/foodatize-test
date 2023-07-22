@@ -59,7 +59,7 @@ class User extends Authenticatable implements JWTSubject {
 //
         $phoneNumberExistOrNot = User::where('phone_number', '=', $request['phone_number'])->exists();
         if ($phoneNumberExistOrNot) {
-
+            $res = User::where('phone_number', $request['phone_number'])->update($request);
             $result['data'] = User::where('phone_number', $request['phone_number'])->first();
             $result['user_type'] = 'old';
         } else {
