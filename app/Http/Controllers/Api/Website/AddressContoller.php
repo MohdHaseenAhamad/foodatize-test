@@ -24,6 +24,16 @@ class AddressContoller extends Controller {
 
     }
 
+    public function getAllUsersAddress($user_id)
+    {
+       $results = Address::where('user_id',$user_id)->get();
+        return response()->json([
+            'status' => 200,
+            'message' => "get all user address fetch successfully",
+            'data' => $results,
+        ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      * @param  \Illuminate\Http\Request $request
@@ -34,6 +44,7 @@ class AddressContoller extends Controller {
             'longitude' => ['required', 'min:2', 'max:30'],
             'latitude' => ['required', 'min:2', 'max:30'],
             'full_address' => ['required', 'min:2', 'max:250'],
+            'landmark'=>['required', 'min:2', 'max:250'],
             'pincode' => ['required', 'min:6', 'max:6'],
             'recieving_person' => ['required', 'min:2', 'max:100'],
             'recieving_person_mobile_number' => ['required', 'min:10', 'max:10'],
@@ -102,6 +113,7 @@ class AddressContoller extends Controller {
             'longitude' => ['required', 'min:2', 'max:30'],
             'latitude' => ['required', 'min:2', 'max:30'],
             'full_address' => ['required', 'min:2', 'max:250'],
+            'landmark'=>['required', 'min:2', 'max:250'],
             'pincode' => ['required', 'min:6', 'max:6'],
             'recieving_person' => ['required', 'min:2', 'max:100'],
             'recieving_person_mobile_number' => ['required', 'min:10', 'max:10'],
@@ -120,6 +132,7 @@ class AddressContoller extends Controller {
             $data = [
                 'longitude' => $request->longitude,
                 'latitude' => $request->latitude,
+                'landmark' => $request->landmark,
                 'full_address' =>$request->full_address,
                 'km'=>$request->km,
                 'pincode' => $request->pincode,

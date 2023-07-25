@@ -99,8 +99,14 @@ class OrderController extends Controller {
             'payment_method'=>101,
         ];
        $response = Order::where('id',$orderId)->update($data);
+       $cart_ids = Order::where('id',$orderId)->select('cart_ids')->get();
+
        if($response)
        {
+
+//                       foreach (explode(',', $cart_ids) as $cart_id) {
+//                Cart::where('user_id', $user_id)->where('id', $cart_id)->update(['status' => 1]);
+//            }
            return response()->json([
                'status' => 200,
                'message' => 'payment method select successfully.',
@@ -119,6 +125,45 @@ class OrderController extends Controller {
 
     public function finallyCheckout(Request $request)
     {
+      ;
+    }
+
+    public function getOrderHistory($user_id)
+    {
+        $results = Order::where('user_id',$user_id)->get();
+        if($results)
+        {
+            return response()->json([
+                'status' => 200,
+                'message' => 'fetch order history successfully.',
+                'data' =>$results
+            ], 200);
+        }else
+        {
+            return response()->json([
+                'status' => 400,
+                'message' => 'order history not successfully.',
+            ], 400);
+        }
+
+    }
+    public function getOrderDetail($order_id)
+    {
+        $results = Order::where('user_id',$order_id)->get();
+        if($results)
+        {
+            return response()->json([
+                'status' => 200,
+                'message' => 'fetch order history successfully.',
+                'data' =>$results
+            ], 200);
+        }else
+        {
+            return response()->json([
+                'status' => 400,
+                'message' => 'order history not successfully.',
+            ], 400);
+        }
 
     }
 

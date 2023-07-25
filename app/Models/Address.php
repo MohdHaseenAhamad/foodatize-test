@@ -15,6 +15,7 @@ class Address extends Model
         'user_id',
         'longitude',
         'latitude',
+        'landmark',
         'full_address',
         'pincode',
         'recieving_person',

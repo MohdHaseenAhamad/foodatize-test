@@ -42,7 +42,6 @@
             </thead>
 
             <tbody>
-<!--            --><?php //var_dump($users) ?>
             @if (count($users) > 0)
                 @foreach ($users as $user)
             <tr>
@@ -55,7 +54,7 @@
                 <td class="table-column-ps-0">
                     <a class="d-flex align-items-center" href="user-profile.html">
                         <div class="avatar avatar-circle">
-                            <img class="avatar-img" src="assets/img/160x160/img10.jpg" alt="Image Description">
+                            <img class="avatar-img" src="{{asset('assets/img/160x160/img10.jpg')}}" alt="Image Description">
                         </div>
                         <div class="ms-3">
                                     <span class="d-block h5 text-inherit mb-0">{{$user->name}} <i
@@ -68,12 +67,12 @@
                 <td>
                     {{$user->phone_number}}
                 </td>
-                <td>  {{$user->email}}</td>
+                <td>  {{$user->email}} </td>
                 <td>
                     <span class="legend-indicator bg-success"></span>{{$user->status == 1 ? 'Active':'Inactive'}}
                 </td>
                 <td>
-                    <button  wire:click="deleteUser({{$user->id}})" class="btn btn-white btn-sm">
+                    <button  wire:click="deleteUser({{$user->id}})" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
                         <i class="bi-pencil-fill me-1"></i> Delete
                     </button >
 
@@ -94,7 +93,28 @@
             @endif
             </tbody>
         </table>
+
+        <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete Confirm</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true close-btn">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure want to delete?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
+                        <button type="button" wire:click.prevent="delete()" class="btn btn-danger close-modal" data-dismiss="modal">Yes, Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
     <!-- End Table -->
 
     <!-- Footer -->

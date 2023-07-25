@@ -36,6 +36,7 @@ Route::get('product',[ProductController::class,'index']);
 Route::post('product/store',[ProductController::class,'store']);
 Route::post('product/search', [ProductController::class,'filter']);
 
+Route::get('address/get-user-address/{id}',[AddressContoller::class,'getAllUsersAddress']);
 Route::post('address/store',[AddressContoller::class,'store']);
 Route::get('address/edit/{id}',[AddressContoller::class,'edit']);
 Route::put('address/update/{id}',[AddressContoller::class,'update']);
@@ -50,6 +51,8 @@ Route::delete('remove-from-cart/{id}', [CartController::class, 'remove']);
 
 
 Route::post('checkout',[OrderController::class,'store']);
+Route::get('get-order-history/{id}',[OrderController::class,'getOrderHistory']);
+Route::get('get-order-detail/{id}',[OrderController::class,'getOrderDetail']);
 Route::post('select-payment-method/{id}',[OrderController::class,'selectPaymentMethod']);
 Route::get('product-checker-for-price/{id}',[OrderController::class,'productCheckerForPrice']);
 Route::get('product-checker-for-qty/{id}',[OrderController::class,'productCheckerForQty']);
