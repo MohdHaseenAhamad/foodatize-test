@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller {
     /**
@@ -34,14 +35,14 @@ class OrderController extends Controller {
      */
     public function store(Request $request) {
         $user_id = $request->user_id;
-        $address_id =$request->address_id;
+        $address_id = $request->address_id;
         $cart_ids = Cart::getOnlyCartIds($request->user_id);
         $total_item_price = Cart::totalProductPriceCountByUser($user_id);
 
-        $gst_per = (intval($total_item_price) * 18 ) / 100;
-        $km=Address::getKmInUserAddress($user_id,$address_id);
-        $km_price = $this->getPrice($km);
-        $to_pay = $total_item_price + $gst_per +$km_price;
+        $gst_per = (intval($total_item_price) * 18) / 100;
+        $km = Address::getKmInUserAddress($address_id);
+        $km_price = !empty($km) ? $this->getPrice($km):null;
+        $to_pay = $total_item_price + $gst_per + $km_price;
 
 
         $obj = new Order();
@@ -58,16 +59,13 @@ class OrderController extends Controller {
         $obj->payment_method = null;
         $obj->save();
         if ($obj->save()) {
-//            foreach (explode(',', $cart_ids) as $cart_id) {
-//                Cart::where('user_id', $user_id)->where('id', $cart_id)->update(['status' => 1]);
-//            }
             $data = [
                 'item_total' => $total_item_price,
                 'gst' => 18,
                 'gst_price' => $gst_per,
                 'km_price' => $km_price,
                 'to_pay' => $to_pay,
-                'order_id'=>$obj->id
+                'order_id' => $obj->id
             ];
 
             return response()->json([
@@ -79,67 +77,55 @@ class OrderController extends Controller {
 
     }
 
-    public function getPrice($km)
-    {
-        if($km <= 2)
-        {
+    public function getPrice($km) {
+        if ($km <= 2) {
             return 0;
-        }
-        else
-        {
+        } else {
             $value = (int)($km / 2);
             $value = $value * 5;
-           return $value;
+            return $value;
         }
     }
 
-    public function selectPaymentMethod(Request $request,$orderId)
-    {
+    public function selectPaymentMethod(Request $request, $orderId) {
         $data = [
-            'payment_method'=>101,
+            'payment_method' => 101,
         ];
-       $response = Order::where('id',$orderId)->update($data);
-       $cart_ids = Order::where('id',$orderId)->select('cart_ids')->get();
+        $response = Order::where('id', $orderId)->update($data);
+        $cart_ids = Order::where('id', $orderId)->select('cart_ids')->get()->toArray();
+//dd($cart_ids[0]['cart_ids']);
+        if ($response) {
 
-       if($response)
-       {
-
-//                       foreach (explode(',', $cart_ids) as $cart_id) {
-//                Cart::where('user_id', $user_id)->where('id', $cart_id)->update(['status' => 1]);
-//            }
-           return response()->json([
-               'status' => 200,
-               'message' => 'payment method select successfully.',
-               'data' => Order::where('id',$orderId)->get()
-           ], 200);
-       }
-       else
-       {
-           return response()->json([
-               'status' => 400,
-               'message' => 'payment method select successfully.',
-               'data' => $data
-           ], 400);
-       }
+            foreach (explode(',', $cart_ids[0]['cart_ids']) as $cart_id) {
+                Cart::where('id', $cart_id)->update(['status' => 1]);
+            }
+            return response()->json([
+                'status' => 200,
+                'message' => 'payment method select successfully.',
+                'data' => Order::where('id', $orderId)->get()
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 400,
+                'message' => 'payment method select successfully.',
+                'data' => $data
+            ], 400);
+        }
     }
 
-    public function finallyCheckout(Request $request)
-    {
-      ;
+    public function finallyCheckout(Request $request) {
+        ;
     }
 
-    public function getOrderHistory($user_id)
-    {
-        $results = Order::where('user_id',$user_id)->get();
-        if($results)
-        {
+    public function getOrderHistory($user_id) {
+        $results = Order::where('user_id', $user_id)->get();
+        if ($results) {
             return response()->json([
                 'status' => 200,
                 'message' => 'fetch order history successfully.',
-                'data' =>$results
+                'data' => $results
             ], 200);
-        }else
-        {
+        } else {
             return response()->json([
                 'status' => 400,
                 'message' => 'order history not successfully.',
@@ -147,18 +133,42 @@ class OrderController extends Controller {
         }
 
     }
-    public function getOrderDetail($order_id)
-    {
-        $results = Order::where('user_id',$order_id)->get();
-        if($results)
+
+    public function getOrderDetail($order_id) {
+        $results = Order::where('id', $order_id)->get()->toArray();
+        $item = array();
+
+        foreach (explode(',', $results[0]['cart_ids']) as $id)
         {
+            $item[] = DB::table('cart')
+                ->join('product', 'cart.product_id', '=', 'product.id')
+                ->select('cart.*','product.name','product.pieces','product.image')
+                ->where('cart.id',$id)
+                ->get();
+        }
+        $km = Address::getKmInUserAddress(intval($results[0]['address_id']));
+        $total_item_price = Cart::totalProductPriceCountByUser($results[0]['user_id']);
+        $order_detail = [
+            'booking_id'=>$results[0]['order_number'],
+            'total_item_price'=>$total_item_price,
+            'km'=>$km,
+            'km_price'=>$this->getPrice($km),
+            'gst'=>$results[0]['gst'],
+            'to_pay'=>$results[0]['final_amount'],
+            'payment_method'=>$results[0]['payment_method'],
+            'payment_status'=>$results[0]['payment_status'],
+        ];
+        $data = [
+            'item'=>$item,
+            'order_detail'=>$order_detail
+        ];
+        if ($results) {
             return response()->json([
                 'status' => 200,
                 'message' => 'fetch order history successfully.',
-                'data' =>$results
+                'data' => $data
             ], 200);
-        }else
-        {
+        } else {
             return response()->json([
                 'status' => 400,
                 'message' => 'order history not successfully.',
@@ -204,25 +214,19 @@ class OrderController extends Controller {
         //
     }
 
-    public function productCheckerForPrice($user_id)
-    {
-        $cartItem=Cart::where('user_id',$user_id)->get()->toArray();
+    public function productCheckerForPrice($user_id) {
+        $cartItem = Cart::where('user_id', $user_id)->get()->toArray();
         $productUpdatePriceCounter = 0;
         $updateCartIds = array();
         $productName = array();
-        foreach($cartItem as $item)
-        {
-            $productItem=Product::where('id',$item['product_id'])->get()->toArray();
+        foreach ($cartItem as $item) {
+            $productItem = Product::where('id', $item['product_id'])->get()->toArray();
             // dd($productItem);
-            if(intVal($productItem[0]['price']) == intVal($item['price']))
-            {
+            if (intVal($productItem[0]['price']) == intVal($item['price'])) {
 
-            }
-            else
-            {
-                $res=Cart::where('user_id',$user_id)->where('product_id',$productItem[0]['id'])->update(['price'=>$productItem[0]['price']]);
-                if(!empty($res))
-                {
+            } else {
+                $res = Cart::where('user_id', $user_id)->where('product_id', $productItem[0]['id'])->update(['price' => $productItem[0]['price']]);
+                if (!empty($res)) {
                     $productUpdatePriceCounter++;
                     $productName[] = $productItem[0]['name'];
                     $updateCartIds[] = $item['id'];
@@ -231,25 +235,19 @@ class OrderController extends Controller {
 
             }
         }
-        if($productUpdatePriceCounter > 0)
-        {
+        if ($productUpdatePriceCounter > 0) {
             $massage = "";
-            if($productUpdatePriceCounter > 1)
-            {
-                $massage = $productName[0]." & ".($productUpdatePriceCounter-1)." other item price has been updates";
-            }
-            else
-            {
-                $massage = $productName[0]." item price has been updates";
+            if ($productUpdatePriceCounter > 1) {
+                $massage = $productName[0] . " & " . ($productUpdatePriceCounter - 1) . " other item price has been updates";
+            } else {
+                $massage = $productName[0] . " item price has been updates";
             }
             return response()->json([
                 'status' => 400,
                 'message' => $massage,
-                'update_product_ids' => implode(',',$updateCartIds),
+                'update_product_ids' => implode(',', $updateCartIds),
             ], 400);
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'status' => 200,
                 'message' => "fetch all item Successfully",
@@ -257,83 +255,65 @@ class OrderController extends Controller {
             ], 200);
         }
     }
-    public function productCheckerForQty($user_id)
-    {
-        $cartItem=Cart::where('user_id',$user_id)->get()->toArray();
+
+    public function productCheckerForQty($user_id) {
+        $cartItem = Cart::where('user_id', $user_id)->get()->toArray();
         $productUpdateQtyCounter = 0;
         $updateCartIds = array();
         $productName = "";
         $productNameForLessThenQuantity = "";
         $productUpdateQtyCounterForLessThenQuantity = 0;
-        foreach($cartItem as $item)
-        {
-            $productItem=Product::where('id',$item['product_id'])->get()->toArray();
+        foreach ($cartItem as $item) {
+            $productItem = Product::where('id', $item['product_id'])->get()->toArray();
             // dd($productItem);
-            if(intVal($productItem[0]['quantity']) < intVal($item['quantity']) && intVal($productItem[0]['quantity']) !=0)
-            {
-                $res=Cart::where('user_id',$user_id)->where('product_id',$productItem[0]['id'])->update(['quantity'=>$productItem[0]['quantity']]);
-                if(!empty($res))
-                {
+            if (intVal($productItem[0]['quantity']) < intVal($item['quantity']) && intVal($productItem[0]['quantity']) != 0) {
+                $res = Cart::where('user_id', $user_id)->where('product_id', $productItem[0]['id'])->update(['quantity' => $productItem[0]['quantity']]);
+                if (!empty($res)) {
                     $productUpdateQtyCounterForLessThenQuantity++;
-                    if($productUpdateQtyCounterForLessThenQuantity == 1)
-                    {
+                    if ($productUpdateQtyCounterForLessThenQuantity == 1) {
                         $productNameForLessThenQuantity = $productItem[0]['name'];
                     }
 
                     $updateCartIds[] = $item['id'];
                 }
-            }
-            else if(intVal($productItem[0]['quantity']) == 0)
-            {
-                $res=Cart::where('user_id',$user_id)->where('product_id',$productItem[0]['id'])->update(['quantity'=>0]);
-                if(!empty($res))
-                {
+            } else if (intVal($productItem[0]['quantity']) == 0) {
+                $res = Cart::where('user_id', $user_id)->where('product_id', $productItem[0]['id'])->update(['quantity' => 0]);
+                if (!empty($res)) {
                     $productUpdateQtyCounter++;
-                    if($productUpdateQtyCounter==1)
-                    {
+                    if ($productUpdateQtyCounter == 1) {
                         $productName = $productItem[0]['name'];
                     }
 
                     $updateCartIds[] = $item['id'];
                 }
-            }
-            else
-            {
+            } else {
 
             }
         }
 
 
-        if($productUpdateQtyCounter > 0 || $productUpdateQtyCounterForLessThenQuantity > 0)
-        {
+        if ($productUpdateQtyCounter > 0 || $productUpdateQtyCounterForLessThenQuantity > 0) {
             $massage1 = "";
             $massage2 = "";
             $massage = array();
-            if($productUpdateQtyCounter > 1)
-            {
-                $massage1 = $productName." & ".($productUpdateQtyCounter-1)." other items price are out of stock";
-            }
-            else
-            {
-                 $massage1 = $productName." is not my stock";
+            if ($productUpdateQtyCounter > 1) {
+                $massage1 = $productName . " & " . ($productUpdateQtyCounter - 1) . " other items price are out of stock";
+            } else {
+                $massage1 = $productName . " is not my stock";
             }
 
-            if($productUpdateQtyCounterForLessThenQuantity > 1)
-            {
-                $massage2 = $productNameForLessThenQuantity." & ".($productUpdateQtyCounterForLessThenQuantity-1)." other items price are out of stock";
+            if ($productUpdateQtyCounterForLessThenQuantity > 1) {
+                $massage2 = $productNameForLessThenQuantity . " & " . ($productUpdateQtyCounterForLessThenQuantity - 1) . " other items price are out of stock";
+            } else {
+                $massage2 = $productNameForLessThenQuantity . " item is out of stock";
             }
-            else
-            {
-                 $massage2 = $productNameForLessThenQuantity." item is out of stock";
-            }
-            $massage = array($massage1,$massage2);
+            $massage = array($massage1, $massage2);
             return response()->json([
                 'status' => 400,
                 'message' => $massage,
-                'update_product_ids' => implode(',',$updateCartIds),
+                'update_product_ids' => implode(',', $updateCartIds),
             ], 400);
-        }else
-        {
+        } else {
             return response()->json([
                 'status' => 200,
                 'message' => "fetch all item Successfully",

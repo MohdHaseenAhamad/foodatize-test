@@ -19,7 +19,7 @@ class Cart extends Model
     public function totalProductPriceCountByUser($user_id)
     {
 
-        $data = Cart::select(DB::raw("SUM(price*quantity) as total_count"))->where('user_id',$user_id)->get()->toArray();
+        $data = Cart::select(DB::raw("SUM(price*quantity) as total_count"))->where('user_id',$user_id)->where('status',0)->get()->toArray();
         return $data[0]['total_count'];
     }
 

@@ -13,6 +13,7 @@ class Address extends Model
 
     protected $fillable = [
         'user_id',
+        'km',
         'longitude',
         'latitude',
         'landmark',
@@ -22,9 +23,10 @@ class Address extends Model
         'recieving_person_mobile_number',
     ];
 
-    public function getKmInUserAddress($user_id,$address_id)
+    public function getKmInUserAddress($address_id)
     {
-        $data = Address::select(DB::raw("km"))->where('user_id',$user_id)->where('id',$address_id)->get()->toArray();
-        return $data[0]['km'];
+        $data = Address::select(DB::raw("km"))->where('id',$address_id)->get()->toArray();
+
+        return !empty($data) ? $data[0]['km']:null;
     }
 }

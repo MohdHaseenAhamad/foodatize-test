@@ -61,35 +61,168 @@
                 <!-- End Card -->
             </div>
 
-            <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-                <!-- Card -->
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2">Active members</h6>
+            {{--<div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">--}}
+              {{----}}
+                {{--<div class="card h-100">--}}
+                    {{--<div class="card-body">--}}
+                        {{--<h6 class="card-subtitle mb-2">Active members</h6>--}}
 
-                        <div class="row align-items-center gx-2">
-                            <div class="col">
-                                <span class="js-counter display-4 text-dark">12</span>
-                                <span class="text-body fs-5 ms-1">from 11</span>
-                            </div>
+                        {{--<div class="row align-items-center gx-2">--}}
+                            {{--<div class="col">--}}
+                                {{--<span class="js-counter display-4 text-dark">12</span>--}}
+                                {{--<span class="text-body fs-5 ms-1">from 11</span>--}}
+                            {{--</div>--}}
 
-                            <div class="col-auto">
-                  <span class="badge bg-soft-success text-success p-1">
-                    <i class="bi-graph-up"></i> 1.2%
-                  </span>
-                            </div>
-                        </div>
-                        <!-- End Row -->
-                    </div>
-                </div>
-                <!-- End Card -->
-            </div>
+                            {{--<div class="col-auto">--}}
+                  {{--<span class="badge bg-soft-success text-success p-1">--}}
+                    {{--<i class="bi-graph-up"></i> 1.2%--}}
+                  {{--</span>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                 {{----}}
+                    {{--</div>--}}
+                {{--</div>--}}
+         {{----}}
+            {{--</div>--}}
 
         </div>
         <!-- End Stats -->
 
         <!-- Card -->
-        @livewire('admin.users')
+        <div>
+            <?php if(session()->has('success'))
+            {
+            ?>
+            <div class="alert alert-success" role="alert">
+                {{ session()->get('success') }}
+            </div>
+            <?php
+            }
+            if(session()->has('error'))
+            {
+            ?>
+            <div class="alert alert-danger" role="alert">
+                {{ session()->get('error') }}
+            </div>
+            <?php
+            }
+            ?>
+
+            <div class="card">
+                <!-- Header -->
+                <!-- End Header -->
+
+                <!-- Table -->
+                <div class="table-responsive datatable-custom position-relative">
+                    <table id="datatable"
+                           class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
+                        <thead class="thead-light">
+                        <tr>
+                            <th class="table-column-pe-0">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="datatableCheckAll">
+                                    <label class="form-check-label" for="datatableCheckAll"></label>
+                                </div>
+                            </th>
+                            <th class="table-column-ps-0">Name</th>
+                            <th>Phone Number</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        @if (count($users) > 0)
+                            @foreach ($users as $user)
+                                <tr>
+                                    <td class="table-column-pe-0">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="datatableCheckAll1">
+                                            <label class="form-check-label" for="datatableCheckAll1"></label>
+                                        </div>
+                                    </td>
+                                    <td class="table-column-ps-0">
+                                        {{$user->name}}
+                                    </td>
+                                    <td>
+                                        {{$user->phone_number}}
+                                    </td>
+                                    <td>  {{$user->email}} </td>
+                                    <td>
+                                        <span class="legend-indicator bg-success"></span>{{$user->phone_status == 1 ? 'Active':'Inactive'}}
+                                    </td>
+                                    <td>
+                                        <a  href="{{url('admin/users/delete/'.$user->id)}}" class="btn btn-danger btn-sm" >
+                                            <i class="bi-pencil-fill me-1"></i> Delete
+                                        </a >
+
+                                        {{--<a href="" class="btn btn-white btn-sm" data-bs-toggle="modal"--}}
+                                           {{--data-bs-target="#editUserModal">--}}
+                                            {{--<i class="bi-pencil-fill me-1"></i> Edit--}}
+                                        {{--</a>--}}
+
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="5" align="center">
+                                    No Posts Found.
+                                </td>
+                            </tr>
+                        @endif
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!-- End Table -->
+
+                <!-- Footer -->
+                <div class="card-footer">
+                    <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
+                        <div class="col-sm mb-2 mb-sm-0">
+                            <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
+                                <span class="me-2">Showing:</span>
+
+                                <!-- Select -->
+                                <div class="tom-select-custom">
+                                    <select id="datatableEntries"
+                                            class="js-select form-select form-select-borderless w-auto" autocomplete="off"
+                                            data-hs-tom-select-options='{
+                            "searchInDropdown": false,
+                            "hideSearch": true
+                          }'>
+                                        <option value="10">10</option>
+                                        <option value="15" selected>15</option>
+                                        <option value="20">20</option>
+                                    </select>
+                                </div>
+                                <!-- End Select -->
+
+                                <span class="text-secondary me-2">of</span>
+
+                                <!-- Pagination Quantity -->
+                                <span id="datatableWithPaginationInfoTotalQty"></span>
+                            </div>
+                        </div>
+                        <!-- End Col -->
+
+                        <div class="col-sm-auto">
+                            <div class="d-flex justify-content-center justify-content-sm-end">
+                                <!-- Pagination -->
+                                <nav id="datatablePagination" aria-label="Activity pagination"></nav>
+                            </div>
+                        </div>
+                        <!-- End Col -->
+                    </div>
+                    <!-- End Row -->
+                </div>
+                <!-- End Footer -->
+            </div>
+        </div>
+
         <!-- End Card -->
     </div>
 </div>

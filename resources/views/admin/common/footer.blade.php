@@ -3180,15 +3180,17 @@
 
 <!-- JS Implementing Plugins -->
 <script src="{{asset('assets/js/vendor.min.js')}}"></script>
+<script src="{{asset('assets/js/jquery.table2excel.min.js')}}"></script>
 
 <script src="{{asset('assets/vendor/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js')}}"></script>
 
 <!-- JS Front -->
 <script src="{{asset('assets/js/theme.min.js')}}"></script>
 <script src="{{asset('assets/js/hs.theme-appearance-charts.js')}}"></script>
+<script src="{{asset('assets/js/bootbox.min.js')}}"></script>
 
 
-@livewireScripts
+{{--@livewireScripts--}}
 <!-- End Style Switcher JS -->
 </body>
 
