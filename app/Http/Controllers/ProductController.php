@@ -14,7 +14,7 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $results = Product::all();
+        $results = Product::where('quantity','>',0)->get();
         return response()->json([
             'status' => 200,
             'message' => "item add Successfully",

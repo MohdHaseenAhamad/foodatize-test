@@ -93,11 +93,16 @@ class OrderController extends Controller {
         ];
         $response = Order::where('id', $orderId)->update($data);
         $cart_ids = Order::where('id', $orderId)->select('cart_ids')->get()->toArray();
-//dd($cart_ids[0]['cart_ids']);
         if ($response) {
 
-            foreach (explode(',', $cart_ids[0]['cart_ids']) as $cart_id) {
+            foreach (explode(',', $cart_ids[0]['cart_ids']) as $cart_id)
+            {
                 Cart::where('id', $cart_id)->update(['status' => 1]);
+                $product_info = Cart::where('id', $cart_id)->select('quantity','product_id')->get()->toArray();
+                $product_info_quantity = Product::where('id',$product_info[0]['product_id'])
+                    ->select('quantity')
+                    ->get()->toArray();
+                Product::where('id',$product_info[0]['product_id'])->update(['quantity'=>(intval($product_info_quantity[0]['quantity']) - intval($product_info[0]['quantity']))]);
             }
             return response()->json([
                 'status' => 200,
@@ -107,8 +112,7 @@ class OrderController extends Controller {
         } else {
             return response()->json([
                 'status' => 400,
-                'message' => 'payment method select successfully.',
-                'data' => $data
+                'message' => 'payment method not select successfully.',
             ], 400);
         }
     }
@@ -118,12 +122,26 @@ class OrderController extends Controller {
     }
 
     public function getOrderHistory($user_id) {
-        $results = Order::where('user_id', $user_id)->get();
+        $results = Order::where('user_id', $user_id)->get()->toArray();
+        $data = [
+            'order_number'=>$results[0]['order_number'],
+            'item_count'=>count(explode(',',$results[0]['cart_ids'])),
+            'status'=>$results[0]['status'],
+            'address_id'=>$results[0]['address_id'],
+            'gst'=>$results[0]['gst'],
+            'payment_status'=>$results[0]['payment_status'],
+            'payment_method'=>$results[0]['payment_method'],
+            'created_at'=>$results[0]['created_at'],
+            'updated_at'=>$results[0]['updated_at'],
+            'order_time'=>$results[0]['order_time'],
+            'transaction_number'=>$results[0]['transaction_number'],
+            'final_amount'=>$results[0]['final_amount'],
+        ];
         if ($results) {
             return response()->json([
                 'status' => 200,
                 'message' => 'fetch order history successfully.',
-                'data' => $results
+                'data' => $data
             ], 200);
         } else {
             return response()->json([
@@ -136,16 +154,17 @@ class OrderController extends Controller {
 
     public function getOrderDetail($order_id) {
         $results = Order::where('id', $order_id)->get()->toArray();
-        $item = array();
-
-        foreach (explode(',', $results[0]['cart_ids']) as $id)
-        {
-            $item[] = DB::table('cart')
-                ->join('product', 'cart.product_id', '=', 'product.id')
+//        $item = array();
+        $cart_ids = explode(',', $results[0]['cart_ids']);
+//        dd($cart_ids);
+//        foreach (explode(',', $results[0]['cart_ids']) as $id)
+//        {
+            $item = DB::table('cart')
+                ->leftJoin('product', 'cart.product_id', '=', 'product.id')
                 ->select('cart.*','product.name','product.pieces','product.image')
-                ->where('cart.id',$id)
+                ->whereIn('cart.id',$cart_ids)
                 ->get();
-        }
+//        }
         $km = Address::getKmInUserAddress(intval($results[0]['address_id']));
         $total_item_price = Cart::totalProductPriceCountByUser($results[0]['user_id']);
         $order_detail = [
@@ -166,7 +185,8 @@ class OrderController extends Controller {
             return response()->json([
                 'status' => 200,
                 'message' => 'fetch order history successfully.',
-                'data' => $data
+                'item' => $item,
+                'order_detail'=>$order_detail
             ], 200);
         } else {
             return response()->json([

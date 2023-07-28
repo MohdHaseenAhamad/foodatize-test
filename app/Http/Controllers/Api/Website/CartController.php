@@ -19,7 +19,7 @@ class CartController extends Controller {
 //
 //        return response()->json([
 //            'status' => 200,
-//            'message' => "card data fetch Successfully",
+//            'message' => "cart data fetch Successfully",
 //            'data' => $results,
 //        ], 200);
     }
@@ -36,11 +36,13 @@ class CartController extends Controller {
     public function getAllCartUserData($id) {
         $results = DB::table('cart')
             ->join('product', 'cart.product_id', '=', 'product.id')
-                ->select('cart.*','product.name','product.pieces','product.image')
+            ->select('cart.*','product.name','product.pieces','product.image')
+            ->where('cart.user_id','=',$id)
+            ->where('cart.status','!=',1)
             ->get();
         return response()->json([
             'status' => 200,
-            'message' => "card data fetch Successfully",
+            'message' => "cart data fetch Successfully",
             'data' => $results,
         ], 200);
     }
@@ -73,7 +75,7 @@ class CartController extends Controller {
             $resp = Cart::where('product_id', $product_id)->where('user_id', $user_id)->update(['quantity' => $quantity]);
             return response()->json([
                 'status' => 200,
-                'message' => 'update to card successfully',
+                'message' => 'update to cart successfully',
                 'item' => Cart::totalCountProductByUser($user_id),
                 'total_price' => Cart::totalProductPriceCountByUser($user_id),
             ], 200);
@@ -87,7 +89,7 @@ class CartController extends Controller {
 
             return response()->json([
                 'status' => 200,
-                'message' => 'add to card successfully',
+                'message' => 'add to cart successfully',
                 'item' => Cart::totalCountProductByUser($user_id),
                 'total_price' => Cart::totalProductPriceCountByUser($user_id),
             ], 200);
@@ -107,7 +109,7 @@ class CartController extends Controller {
             if ($resp) {
                 return response()->json([
                     'status' => 200,
-                    'message' => 'card update successfully',
+                    'message' => 'cart update successfully',
                     'item' => Cart::totalCountProductByUser($user_id),
                     'total_price' => Cart::totalProductPriceCountByUser($user_id),
                 ], 200);
@@ -127,11 +129,11 @@ class CartController extends Controller {
      */
     public function remove($id) {
         if ($id) {
-            $cardRemove = Cart::findOrFail($id)->delete();
-            if ($cardRemove) {
+            $cartRemove = Cart::findOrFail($id)->delete();
+            if ($cartRemove) {
                 return response()->json([
                     'status' => 200,
-                    'message' => 'card item remove successfully',
+                    'message' => 'cart item remove successfully',
                     'data' => session()->get('cart')
                 ], 200);
             } else {
