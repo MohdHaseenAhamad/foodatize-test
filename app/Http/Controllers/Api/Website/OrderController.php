@@ -53,6 +53,7 @@ class OrderController extends Controller {
         $obj->status = 'pending';
         $obj->order_time = date('Y-m-d H:i:s');
         $obj->gst = 18;
+        $obj->total_item_price = $total_item_price;
         $obj->final_amount = $to_pay;
         $obj->transaction_number = null;
         $obj->payment_status = 0;
@@ -87,7 +88,8 @@ class OrderController extends Controller {
         }
     }
 
-    public function selectPaymentMethod(Request $request, $orderId) {
+    public function selectPaymentMethod(Request $request, $orderId)
+    {
         $data = [
             'payment_method' => 101,
         ];
@@ -123,20 +125,26 @@ class OrderController extends Controller {
 
     public function getOrderHistory($user_id) {
         $results = Order::where('user_id', $user_id)->get()->toArray();
-        $data = [
-            'order_number'=>$results[0]['order_number'],
-            'item_count'=>count(explode(',',$results[0]['cart_ids'])),
-            'status'=>$results[0]['status'],
-            'address_id'=>$results[0]['address_id'],
-            'gst'=>$results[0]['gst'],
-            'payment_status'=>$results[0]['payment_status'],
-            'payment_method'=>$results[0]['payment_method'],
-            'created_at'=>$results[0]['created_at'],
-            'updated_at'=>$results[0]['updated_at'],
-            'order_time'=>$results[0]['order_time'],
-            'transaction_number'=>$results[0]['transaction_number'],
-            'final_amount'=>$results[0]['final_amount'],
-        ];
+        $data = array();
+        foreach ($results as $key=> $value)
+        {
+            $data[] = [
+                'id'=>$value['id'],
+                'order_number'=>$value['order_number'],
+                'item_count'=>count(explode(',',$value['cart_ids'])),
+                'status'=>$value['status'],
+                'address_id'=>$value['address_id'],
+                'gst'=>$value['gst'],
+                'payment_status'=>$value['payment_status'],
+                'payment_method'=>$value['payment_method'],
+                'created_at'=>$value['created_at'],
+                'updated_at'=>$value['updated_at'],
+                'order_time'=>$value['order_time'],
+                'transaction_number'=>$value['transaction_number'],
+                'final_amount'=>$value['final_amount'],
+            ];
+        }
+
         if ($results) {
             return response()->json([
                 'status' => 200,
@@ -166,10 +174,10 @@ class OrderController extends Controller {
                 ->get();
 //        }
         $km = Address::getKmInUserAddress(intval($results[0]['address_id']));
-        $total_item_price = Cart::totalProductPriceCountByUser($results[0]['user_id']);
+//        $total_item_price = Cart::totalProductPriceCountByUser($results[0]['user_id']);
         $order_detail = [
             'booking_id'=>$results[0]['order_number'],
-            'total_item_price'=>$total_item_price,
+            'total_item_price'=>$results[0]['total_item_price'],
             'km'=>$km,
             'km_price'=>$this->getPrice($km),
             'gst'=>$results[0]['gst'],

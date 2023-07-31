@@ -26,6 +26,7 @@ class Cart extends Model
     public function getOnlyCartIds($user_id)
     {
         $data = Cart::select(DB::raw("GROUP_CONCAT(id) AS cart_ids"))->where('user_id',$user_id)->get()->toArray();
+
         return $data[0]['cart_ids'];
     }
 }

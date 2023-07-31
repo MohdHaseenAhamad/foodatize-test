@@ -22,11 +22,11 @@
                 </div>
                 <!-- End Col -->
 
-                <div class="col-sm-auto">
-                    <a class="btn btn-primary" href="users-add-user.html">
-                        <i class="bi-person-plus-fill me-1"></i> Add user
-                    </a>
-                </div>
+                {{--<div class="col-sm-auto">--}}
+                    {{--<a class="btn btn-primary" href="users-add-user.html">--}}
+                        {{--<i class="bi-person-plus-fill me-1"></i> Add user--}}
+                    {{--</a>--}}
+                {{--</div>--}}
                 <!-- End Col -->
             </div>
             <!-- End Row -->
@@ -44,15 +44,15 @@
                         <div class="row align-items-center gx-2">
                             <div class="col">
                                 <span class="js-counter display-4 text-dark">{{$users_count}}</span>
-                                <span class="text-body fs-5 ms-1">from 22</span>
+                                {{--<span class="text-body fs-5 ms-1">from 22</span>--}}
                             </div>
                             <!-- End Col -->
 
-                            <div class="col-auto">
-                  <span class="badge bg-soft-success text-success p-1">
-                    <i class="bi-graph-up"></i> 5.0%
-                  </span>
-                            </div>
+                            {{--<div class="col-auto">--}}
+                  {{--<span class="badge bg-soft-success text-success p-1">--}}
+                    {{--<i class="bi-graph-up"></i> 5.0%--}}
+                  {{--</span>--}}
+                            {{--</div>--}}
                             <!-- End Col -->
                         </div>
                         <!-- End Row -->

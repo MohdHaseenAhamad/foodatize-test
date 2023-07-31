@@ -62,7 +62,7 @@ class CartController extends Controller {
         $mode = $request->mode;
         $product = Product::findOrFail($product_id);
         $obj = new Cart();
-        $res = Cart::where('product_id', $product_id)->where('user_id', $user_id)->get()->toArray();
+        $res = Cart::where('product_id', $product_id)->where('status','!=',1)->where('user_id', $user_id)->get()->toArray();
         if (!empty($res[0])) {
             $quantity = intval($res[0]['quantity']);
             if ($mode == 'add') {

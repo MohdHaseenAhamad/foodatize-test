@@ -1,271 +1,42 @@
 @include('admin/common/header')
 @include('admin/common/left-side-bar')
 <?php
-    define('ORDER_STATUS',array('pending'=>'Pending','processing'=>'Processing','completed'=>'Completed','decline'=>'Decline'))
+define('ORDER_STATUS', array('pending' => 'Pending', 'processing' => 'Processing', 'completed' => 'Completed', 'decline' => 'Decline'))
 ?>
 <div class="content container-fluid">
     <!-- Page Header -->
     <div class="page-header">
         <div class="row align-items-center mb-3">
             <div class="col-sm">
-                <h1 class="page-header-title">Orders <span class="badge bg-soft-dark text-dark ms-2">106,905</span></h1>
+                <h1 class="page-header-title">Orders <span
+                        class="badge bg-soft-dark text-dark ms-2">{{count($orders)}}</span></h1>
 
-                <div class="d-flex mt-2">
-                    <a class="text-body me-3" href="javascript:;" data-bs-toggle="modal" data-bs-target="#exportOrdersModal">
-                        <i class="bi-download me-1"></i> Export
-                    </a>
 
-                    <!-- Dropdown -->
-                    <div class="dropdowm">
-                        <a class="text-body" href="javascript:;" id="moreOptionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            More options <i class="bi-chevron-down"></i>
-                        </a>
-
-                        <div class="dropdown-menu mt-1" aria-labelledby="moreOptionsDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="bi-folder-plus dropdown-item-icon"></i> New order
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="bi-folder dropdown-item-icon"></i> New order - Development
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="bi-folder dropdown-item-icon"></i> New order - Staging
-                            </a>
-                        </div>
-                    </div>
-                    <!-- End Dropdown -->
-                </div>
             </div>
             <!-- End Col -->
         </div>
         <!-- End Row -->
 
         <!-- Nav Scroller -->
-        <div class="js-nav-scroller hs-nav-scroller-horizontal">
-          <span class="hs-nav-scroller-arrow-prev" style="display: none;">
-            <a class="hs-nav-scroller-arrow-link" href="javascript:;">
-              <i class="bi-chevron-left"></i>
-            </a>
-          </span>
 
-            <span class="hs-nav-scroller-arrow-next" style="display: none;">
-            <a class="hs-nav-scroller-arrow-link" href="javascript:;">
-              <i class="bi-chevron-right"></i>
-            </a>
-          </span>
-
-            <!-- Nav -->
-            <ul class="nav nav-tabs page-header-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">All products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Open</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Unfulfilled</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Unpaid</a>
-                </li>
-            </ul>
-            <!-- End Nav -->
-        </div>
         <!-- End Nav Scroller -->
     </div>
     <!-- End Page Header -->
 
-    <div class="row justify-content-end mb-3">
-        <div class="col-lg">
-            <!-- Datatable Info -->
-            <div id="datatableCounterInfo" style="display: none;">
-                <div class="d-sm-flex justify-content-lg-end align-items-sm-center">
-              <span class="d-block d-sm-inline-block fs-5 me-3 mb-2 mb-sm-0">
-                <span id="datatableCounter">0</span>
-                Selected
-              </span>
-                    <a class="btn btn-outline-danger btn-sm mb-2 mb-sm-0 me-2" href="javascript:;">
-                        <i class="bi-trash"></i> Delete
-                    </a>
-                    <a class="btn btn-white btn-sm mb-2 mb-sm-0 me-2" href="javascript:;">
-                        <i class="bi-archive"></i> Archive
-                    </a>
-                    <a class="btn btn-white btn-sm mb-2 mb-sm-0 me-2" href="javascript:;">
-                        <i class="bi-upload"></i> Publish
-                    </a>
-                    <a class="btn btn-white btn-sm mb-2 mb-sm-0" href="javascript:;">
-                        <i class="bi-x-lg"></i> Unpublish
-                    </a>
-                </div>
-            </div>
-            <!-- End Datatable Info -->
-        </div>
-        <!-- End Col -->
-    </div>
+
     <!-- End Row -->
 
     <!-- Card -->
     <div class="card">
         <!-- Header -->
-        <div class="card-header card-header-content-md-between">
-            <div class="mb-2 mb-md-0">
-                <form>
-                    <!-- Search -->
-                    <div class="input-group input-group-merge input-group-flush">
-                        <div class="input-group-prepend input-group-text">
-                            <i class="bi-search"></i>
-                        </div>
-                        <input id="datatableSearch" type="search" class="form-control" placeholder="Search users" aria-label="Search users">
-                    </div>
-                    <!-- End Search -->
-                </form>
-            </div>
 
-            <div class="d-grid d-sm-flex gap-2">
-                <!-- Dropdown -->
-                <div class="dropdown">
-                    <button type="button" class="btn btn-white btn-sm dropdown-toggle w-100" id="usersExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi-download me-2"></i> Export
-                    </button>
-
-                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="usersExportDropdown">
-                        <span class="dropdown-header">Options</span>
-                        <a id="export-copy" class="dropdown-item" href="javascript:;">
-                            <img class="avatar avatar-xss avatar-4x3 me-2" src="assets/svg/illustrations/copy-icon.svg" alt="Image Description">
-                            Copy
-                        </a>
-                        <a id="export-print" class="dropdown-item" href="javascript:;">
-                            <img class="avatar avatar-xss avatar-4x3 me-2" src="assets/svg/illustrations/print-icon.svg" alt="Image Description">
-                            Print
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <span class="dropdown-header">Download options</span>
-                        <a id="export-excel" class="dropdown-item" href="javascript:;">
-                            <img class="avatar avatar-xss avatar-4x3 me-2" src="assets/svg/brands/excel-icon.svg" alt="Image Description">
-                            Excel
-                        </a>
-                        <a id="export-csv" class="dropdown-item" href="javascript:;">
-                            <img class="avatar avatar-xss avatar-4x3 me-2" src="assets/svg/components/placeholder-csv-format.svg" alt="Image Description">
-                            .CSV
-                        </a>
-                        <a id="export-pdf" class="dropdown-item" href="javascript:;">
-                            <img class="avatar avatar-xss avatar-4x3 me-2" src="assets/svg/brands/pdf-icon.svg" alt="Image Description">
-                            PDF
-                        </a>
-                    </div>
-                </div>
-                <!-- End Dropdown -->
-
-                <!-- Dropdown -->
-                <div class="dropdown">
-                    <button type="button" class="btn btn-white btn-sm w-100" id="showHideDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                        <i class="bi-table me-1"></i> Columns <span class="badge bg-soft-dark text-dark rounded-circle ms-1">7</span>
-                    </button>
-
-                    <div class="dropdown-menu dropdown-menu-end dropdown-card" aria-labelledby="showHideDropdown" style="width: 15rem;">
-                        <div class="card card-sm">
-                            <div class="card-body">
-                                <div class="d-grid gap-3">
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_order">
-                        <span class="col-8 col-sm-9 ms-0">
-                          <span class="me-2">Order</span>
-                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                          <input type="checkbox" class="form-check-input" id="toggleColumn_order" checked>
-                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_date">
-                        <span class="col-8 col-sm-9 ms-0">
-                          <span class="me-2">Date</span>
-                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                          <input type="checkbox" class="form-check-input" id="toggleColumn_date" checked>
-                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_customer">
-                        <span class="col-8 col-sm-9 ms-0">
-                          <span class="me-2">Customer</span>
-                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                          <input type="checkbox" class="form-check-input" id="toggleColumn_customer" checked>
-                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_payment_status">
-                        <span class="col-8 col-sm-9 ms-0">
-                          <span class="me-2">Payment status</span>
-                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                          <input type="checkbox" class="form-check-input" id="toggleColumn_payment_status" checked>
-                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_fulfillment_status">
-                        <span class="col-8 col-sm-9 ms-0">
-                          <span class="me-2">Fulfillment status</span>
-                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                          <input type="checkbox" class="form-check-input" id="toggleColumn_fulfillment_status" checked>
-                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_payment_method">
-                        <span class="col-8 col-sm-9 ms-0">
-                          <span class="me-2">Payment method</span>
-                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                          <input type="checkbox" class="form-check-input" id="toggleColumn_payment_method" checked>
-                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_total">
-                        <span class="col-8 col-sm-9 ms-0">
-                          <span class="me-2">Total</span>
-                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                          <input type="checkbox" class="form-check-input" id="toggleColumn_total">
-                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_actions">
-                        <span class="col-8 col-sm-9 ms-0">
-                          <span class="me-2">Actions</span>
-                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                          <input type="checkbox" class="form-check-input" id="toggleColumn_actions" checked>
-                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Dropdown -->
-            </div>
-        </div>
         <!-- End Header -->
 
         <!-- Table -->
         <div class="table-responsive datatable-custom">
-            <table id="datatable" class="table table-hover table-borderless table-thead-bordered table-nowrap table-align-middle card-table" style="width: 100%" data-hs-datatables-options='{
+            <table id="datatable"
+                   class="table table-hover table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
+                   style="width: 100%" data-hs-datatables-options='{
                    "columnDefs": [{
                       "targets": [0],
                       "orderable": false
@@ -302,7 +73,7 @@
 
                 <tbody>
                 <?php foreach ($orders as $order){
-                    ?>
+                ?>
                 <tr>
                     <td class="table-column-pe-0">
                         <div class="form-check">
@@ -324,7 +95,10 @@
                     </td>
                     <td>
                         <div class="tom-select-custom">
-                            <select class="js-select js-datatable-filter form-select form-select-sm order_status_change" data-id="{{$order->id}}" data-href="{{url('admin/orders/change-status/'.$order->id)}}" data-target-column-index="2" data-hs-tom-select-options='{
+                            <select class="js-select js-datatable-filter form-select form-select-sm order_status_change"
+                                    data-id="{{$order->id}}"
+                                    data-href="{{url('admin/orders/change-status/'.$order->id)}}"
+                                    data-target-column-index="2" data-hs-tom-select-options='{
                                       "placeholder": "Any",
                                       "searchInDropdown": false,
                                       "hideSearch": true,
@@ -332,11 +106,12 @@
                                     }'>
                                 <?php
                                 foreach (ORDER_STATUS as $key => $value)
-                                    {
-                                        ?>
-                                    <option value="{{$key}}" {{$order->status ==$key ? 'selected="selected"':''}}>{{$value}}</option>
-<?php
-                                    }
+                                {
+                                ?>
+                                <option
+                                    value="{{$key}}" {{$order->status ==$key ? 'selected="selected"':''}}>{{$value}}</option>
+                                <?php
+                                }
                                 ?>
 
                             </select>
@@ -349,49 +124,17 @@
                     <td>{{$order->final_amount}}</td>
                     <td>
                         <div class="btn-group" role="group">
-                            <a class="btn btn-white btn-sm" href="ecommerce-order-details.html">
+                            <a class="btn btn-white btn-sm" href="{{url('admin/orders/detail/'.$order->id)}}">
                                 <i class="bi-eye"></i> View
                             </a>
 
                             <!-- Button Group -->
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-white btn-icon btn-sm dropdown-toggle dropdown-toggle-empty" id="ordersExportDropdown1" data-bs-toggle="dropdown" aria-expanded="false"></button>
 
-                                <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="ordersExportDropdown1">
-                                    <span class="dropdown-header">Options</span>
-                                    <a class="js-export-copy dropdown-item" href="javascript:;">
-                                        <img class="avatar avatar-xss avatar-4x3 me-2" src="assets/svg/illustrations/copy-icon.svg" alt="Image Description">
-                                        Copy
-                                    </a>
-                                    <a class="js-export-print dropdown-item" href="javascript:;">
-                                        <img class="avatar avatar-xss avatar-4x3 me-2" src="assets/svg/illustrations/print-icon.svg" alt="Image Description">
-                                        Print
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <span class="dropdown-header">Download options</span>
-                                    <a class="js-export-excel dropdown-item" href="javascript:;">
-                                        <img class="avatar avatar-xss avatar-4x3 me-2" src="assets/svg/brands/excel-icon.svg" alt="Image Description">
-                                        Excel
-                                    </a>
-                                    <a class="js-export-csv dropdown-item" href="javascript:;">
-                                        <img class="avatar avatar-xss avatar-4x3 me-2" src="assets/svg/components/placeholder-csv-format.svg" alt="Image Description">
-                                        .CSV
-                                    </a>
-                                    <a class="js-export-pdf dropdown-item" href="javascript:;">
-                                        <img class="avatar avatar-xss avatar-4x3 me-2" src="assets/svg/brands/pdf-icon.svg" alt="Image Description">
-                                        PDF
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="javascript:;">
-                                        <i class="bi-trash dropdown-item-icon"></i> Delete
-                                    </a>
-                                </div>
-                            </div>
                             <!-- End Unfold -->
                         </div>
                     </td>
                 </tr>
-<?php
+                <?php
                 } ?>
 
 
@@ -409,7 +152,8 @@
 
                         <!-- Select -->
                         <div class="tom-select-custom">
-                            <select id="datatableEntries" class="js-select form-select form-select-borderless w-auto" autocomplete="off" data-hs-tom-select-options='{
+                            <select id="datatableEntries" class="js-select form-select form-select-borderless w-auto"
+                                    autocomplete="off" data-hs-tom-select-options='{
                             "searchInDropdown": false,
                             "hideSearch": true
                           }'>
@@ -445,8 +189,9 @@
 </div>
 
 @include('admin/common/footer')
+<script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
 <script>
-    (function() {
+    (function () {
         window.onload = function () {
 
 
@@ -496,35 +241,33 @@
         }
     });
     $(document).ready(function () {
-       $(".order_status_change").on('change',function () {
-           var status = $(this).val();
-           var href = $(this).attr('data-href');
-           var id = $(this).attr('data-id');
-           $.ajax({
-               method:"POST",
-               url:href,
-               data:{status:status,id:id},
-               success:function (res) {
-                   if(res > 0)
-                   {
-                       bootbox.alert({
-                           message: '<h3>Order Status Change Successfully.</h3>',
-                           className: 'rubberBand animated',
-                           centerVertical: true,
+        $(".order_status_change").on('change', function () {
+            var status = $(this).val();
+            var href = $(this).attr('data-href');
+            var id = $(this).attr('data-id');
+            $.ajax({
+                method: "POST",
+                url: href,
+                data: {status: status, id: id},
+                success: function (res) {
+                    if (res > 0) {
+                        bootbox.alert({
+                            // message: '<h3>Order Status Change Successfully.</h3>',
+                            message: res,
+                            className: 'rubberBand animated',
+                            centerVertical: true,
 
-                       });
-                   }
-                   else
-                   {
-                       bootbox.alert({
-                           message: '<h3>Something went wrong.</h3>',
-                           className: 'rubberBand animated',
-                           centerVertical: true,
+                        });
+                    } else {
+                        bootbox.alert({
+                            message: '<h3>Something went wrong.</h3>',
+                            className: 'rubberBand animated',
+                            centerVertical: true,
 
-                       });
-                   }
-               }
-           });
-       });
+                        });
+                    }
+                }
+            });
+        });
     });
 </script>

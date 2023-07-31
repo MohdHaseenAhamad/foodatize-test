@@ -8,13 +8,13 @@
             <div class="col-sm mb-2 mb-sm-0">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-no-gutter">
-                        <li class="breadcrumb-item"><a class="breadcrumb-link" href="{{url('admin/products')}}">Products</a>
+                        <li class="breadcrumb-item"><a class="breadcrumb-link" href="ecommerce-products.html">Products</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Add Product</li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit Product</li>
                     </ol>
                 </nav>
 
-                <h1 class="page-header-title">Add Product</h1>
+                <h1 class="page-header-title">Edit Product</h1>
 
             </div>
             <!-- End Col -->
@@ -39,7 +39,7 @@
     <?php
     }
     ?>
-    <form method="POST" action="{{url('admin/products/save')}}" enctype="multipart/form-data">
+    <form method="POST" action="{{url('admin/products/update/'.$id)}}" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-lg-8 mb-3 mb-lg-0">
@@ -62,7 +62,7 @@
 
                             <input type="text" class="form-control" name="name" id="name"
                                    placeholder="" aria-label=""
-                                   value="">
+                                   value="{{isset($result->name) ? $result->name:''}}">
                         </div>
                         <!-- End Form -->
 
@@ -73,7 +73,7 @@
                                     <label for="price" class="form-label">Price</label>
 
                                     <input type="text" class="form-control" name="price" id="price"
-                                           placeholder="eg. 348121032" aria-label="eg. 240">
+                                           placeholder="eg. 348121032" aria-label="eg. 240" value="{{isset($result->price) ? $result->price:''}}">
                                 </div>
                                 <!-- End Form -->
                             </div>
@@ -84,7 +84,7 @@
                                     <label for="pieces" class="form-label">Pieces</label>
 
                                     <input type="text" class="form-control" name="pieces" id="pieces"
-                                           placeholder="eg. 348121032" aria-label="eg. 12">
+                                           placeholder="eg. 348121032" aria-label="eg. 12" value="{{isset($result->pieces) ? $result->pieces:''}}">
                                 </div>
                                 <!-- End Form -->
                             </div>
@@ -94,7 +94,7 @@
                                     <label for="quantity" class="form-label">Quantity</label>
 
                                     <input type="text" class="form-control" name="quantity" id="quantity"
-                                           placeholder="eg. 348121032" value="">
+                                           placeholder="eg. 348121032" aria-label="eg. 24" value="{{isset($result->quantity) ? $result->quantity:''}}">
                                 </div>
                                 <!-- End Form -->
                             </div>
@@ -109,7 +109,7 @@
 
                             <textarea type="text" rows="3" class="form-control" name="description" id="description"
                                       placeholder="" aria-label=""
-                                      ></textarea>
+                            >{{isset($result->description) ? $result->description:''}}</textarea>
                         </div>
 
                         <!-- End Quill -->
@@ -143,6 +143,13 @@
 
                     <!-- Body -->
                     <div class="card-body">
+                        <div class="dz-message">
+                            <img class="avatar avatar-xl avatar-4x3 mb-3" src="{{isset($result->image) ? $result->image:''}}"
+                                 alt="Image Description" data-hs-theme-appearance="default">
+                            <img class="avatar avatar-xl avatar-4x3 mb-3"
+                                 src="{{isset($result->image) ? $result->image:''}}" alt="Image Description"
+                                 data-hs-theme-appearance="dark">
+                        </div>
                         <!-- Dropzone -->
                         {{-- <div id="attachFilesNewProjectLabel" class="js-dropzone dz-dropzone dz-dropzone-card">
                             <div class="dz-message">
@@ -160,7 +167,8 @@
                             </div>
                         </div> --}}
                         <label>
-                            <input type="file" name="image" id="image" accept="image/*" />
+                            <input type="file" name="image" id="image" accept="image/*" value="{{isset($result->image) ? $result->image:''}}" />
+                            <input type="hidden" name="old_image" value="{{isset($result->image) ? $result->image:''}}">
                         </label>
                         <!-- End Dropzone -->
                     </div>

@@ -69,6 +69,7 @@ class ProductController extends Controller {
             $pro->image = $image_url;
             $pro->pieces = $request->pieces;
             $pro->price = $request->price;
+            $pro->quantity = $request->quantity;
             $pro->description = $request->description;
             $pro->save();
             if ($pro->save()) {

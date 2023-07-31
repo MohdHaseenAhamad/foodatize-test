@@ -1,43 +1,7 @@
 <!-- ONLY DEV -->
 <!-- Footer -->
 
-<div class="footer">
-    <div class="row justify-content-between align-items-center">
-        <div class="col">
-            <p class="fs-6 mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2022 Htmlstream.</span></p>
-        </div>
-        <!-- End Col -->
 
-        <div class="col-auto">
-            <div class="d-flex justify-content-end">
-                <!-- List Separator -->
-                <ul class="list-inline list-separator">
-                    <li class="list-inline-item">
-                        <a class="list-separator-link" href="#">FAQ</a>
-                    </li>
-
-                    <li class="list-inline-item">
-                        <a class="list-separator-link" href="#">License</a>
-                    </li>
-
-                    <li class="list-inline-item">
-                        <!-- Keyboard Shortcuts Toggle -->
-                        <button class="btn btn-ghost-secondary btn btn-icon btn-ghost-secondary rounded-circle"
-                                type="button" data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasKeyboardShortcuts"
-                                aria-controls="offcanvasKeyboardShortcuts">
-                            <i class="bi-command"></i>
-                        </button>
-                        <!-- End Keyboard Shortcuts Toggle -->
-                    </li>
-                </ul>
-                <!-- End List Separator -->
-            </div>
-        </div>
-        <!-- End Col -->
-    </div>
-    <!-- End Row -->
-</div>
 
 <!-- End Footer -->
 </main>
@@ -220,11 +184,7 @@
 <!-- End Builder -->
 
 <!-- Builder Toggle -->
-<div id="builderOffcanvas" class="position-fixed bottom-0 end-0 me-5 mb-5" style="z-index: 3;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBuilder" aria-controls="offcanvasBuilder">
-    <a class="btn btn-dark btn-lg" href="javascript:;">
-        <i class="bi-sliders fs-6 me-2"></i> Customize
-    </a>
-</div>
+
 <!-- End Builder Toggle -->
 
 <div class="d-none js-build-layouts">
@@ -3149,38 +3109,38 @@
                     <!-- End List Group Item -->
                 </ul>
             </div>
-<!-- Footer -->
-<div class="modal-footer">
-    <div class="row align-items-center flex-grow-1 mx-n2">
-        <div class="col-sm-9 mb-2 mb-sm-0">
-            <input type="hidden" id="inviteUserPublicClipboard" value="https://themes.getbootstrap.com/product/front-multipurpose-responsive-template/">
+            <!-- Footer -->
+            <div class="modal-footer">
+                <div class="row align-items-center flex-grow-1 mx-n2">
+                    <div class="col-sm-9 mb-2 mb-sm-0">
+                        <input type="hidden" id="inviteUserPublicClipboard" value="https://themes.getbootstrap.com/product/front-multipurpose-responsive-template/">
 
-            <p class="modal-footer-text">The public share <a href="#">link settings</a>
-                <i class="bi-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="The public share link allows people to view the project without giving access to full collaboration features."></i>
-            </p>
-        </div>
+                        <p class="modal-footer-text">The public share <a href="#">link settings</a>
+                            <i class="bi-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="The public share link allows people to view the project without giving access to full collaboration features."></i>
+                        </p>
+                    </div>
 
-        <div class="col-sm-3 text-sm-end">
-            <a class="js-clipboard btn btn-white btn-sm text-nowrap" href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy to clipboard!" data-hs-clipboard-options='{
+                    <div class="col-sm-3 text-sm-end">
+                        <a class="js-clipboard btn btn-white btn-sm text-nowrap" href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy to clipboard!" data-hs-clipboard-options='{
                   "type": "tooltip",
                   "successText": "Copied!",
                   "contentTarget": "#inviteUserPublicClipboard",
                   "container": "#inviteUserModal"
                  }'>
-                <i class="bi-link-45deg me-1"></i> Copy link</a>
+                            <i class="bi-link-45deg me-1"></i> Copy link</a>
+                    </div>
+                </div>
+            </div>
+            <!-- End Footer -->
         </div>
     </div>
-</div>
-<!-- End Footer -->
-</div>
-</div>
 </div>
 <!-- End Create a new user Modal -->
 <!-- ========== END SECONDARY CONTENTS ========== -->
 
 <!-- JS Implementing Plugins -->
 <script src="{{asset('assets/js/vendor.min.js')}}"></script>
-<script src="{{asset('assets/js/jquery.table2excel.min.js')}}"></script>
+{{-- <script src="{{asset('assets/js/jquery.table2excel.min.js')}}"></script> --}}
 
 <script src="{{asset('assets/vendor/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js')}}"></script>
 
