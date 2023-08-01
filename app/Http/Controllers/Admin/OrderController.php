@@ -21,7 +21,7 @@ class OrderController extends Controller{
     {
        $results=DB::table('orders')
             ->leftJoin('users','orders.user_id','=','users.id')
-            ->select('orders.*','users.name')
+            ->select('orders.*','users.name')->orderBy('id', 'DESC')
             ->get();
         return view('admin/order/listing',['total_order',count($results),'orders'=>$results]);
     }

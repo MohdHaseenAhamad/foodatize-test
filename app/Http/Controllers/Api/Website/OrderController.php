@@ -53,14 +53,14 @@ class OrderController extends Controller {
         $obj->status = 'pending';
         $obj->order_time = date('Y-m-d H:i:s');
         $obj->gst = 18;
-        $obj->total_item_price = $total_item_price;
-        $obj->final_amount = $to_pay;
+        $obj->total_item_price = intval($total_item_price);
+        $obj->final_amount = intval($to_pay);
         $obj->transaction_number = null;
         $obj->payment_status = 0;
         $obj->payment_method = null;
-        $obj->save();
         if ($obj->save()) {
             $data = [
+                'order_id'=>$obj->id,
                 'item_total' => $total_item_price,
                 'gst' => 18,
                 'gst_price' => $gst_per,
@@ -85,6 +85,27 @@ class OrderController extends Controller {
             $value = (int)($km / 2);
             $value = $value * 5;
             return $value;
+        }
+    }
+    public function cancelOrder($orderId)
+    {
+        $data = [
+            'status' => 'cancel',
+        ];
+        $response = Order::where('id', $orderId)->update($data);
+        if($response)
+        {
+            return response()->json([
+                'status' => 200,
+                'message' => 'your order cancel successfully.',
+            ], 200);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Something went wrong.',
+            ], 400);
         }
     }
 

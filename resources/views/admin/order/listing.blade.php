@@ -7,6 +7,14 @@ define('ORDER_STATUS', array('pending' => 'Pending', 'processing' => 'Processing
     <!-- Page Header -->
     <div class="page-header">
         <div class="row align-items-center mb-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-no-gutter">
+                    <li class="breadcrumb-item"><a class="" href="{{url('admin')}}">Dashboard</a>
+                    </li>
+                    <li class="active"><a class=" " href="javascript:void(0)">&nbsp;&nbsp;/ Orders</a>
+                    </li>
+                </ol>
+            </nav>
             <div class="col-sm">
                 <h1 class="page-header-title">Orders <span
                         class="badge bg-soft-dark text-dark ms-2">{{count($orders)}}</span></h1>

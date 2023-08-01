@@ -13,7 +13,7 @@ class Cart extends Model
 
     public function totalCountProductByUser($user_id)
     {
-        $count = Cart::where('user_id',$user_id)->get();
+        $count = Cart::where('user_id',$user_id)->where('status','!=',1)->get();
         return $count->count();
     }
     public function totalProductPriceCountByUser($user_id)
@@ -25,7 +25,7 @@ class Cart extends Model
 
     public function getOnlyCartIds($user_id)
     {
-        $data = Cart::select(DB::raw("GROUP_CONCAT(id) AS cart_ids"))->where('user_id',$user_id)->get()->toArray();
+        $data = Cart::select(DB::raw("GROUP_CONCAT(id) AS cart_ids"))->where('user_id',$user_id)->where('status','!=',1)->get()->toArray();
 
         return $data[0]['cart_ids'];
     }

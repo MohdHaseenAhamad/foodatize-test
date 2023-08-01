@@ -11,8 +11,17 @@
     <div class="page-header">
         <div class="row align-items-center mb-3">
             <div class="col-sm mb-2 mb-sm-0">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-no-gutter">
+                        <li class="breadcrumb-item"><a class="breadcrumb-link"
+                                                       href="javascript:void(0);">Dashboard</a></li>
+                        <li class=" active" aria-current="page">&nbsp;&nbsp;/ Products</li>
+                    </ol>
+                </nav>
+
                 <h1 class="page-header-title">Products <span class="badge bg-soft-dark text-dark ms-2">{{count($products)}}</span></h1>
             </div>
+
             <!-- End Col -->
 
             <div class="col-sm-auto">

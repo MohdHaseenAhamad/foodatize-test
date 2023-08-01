@@ -10,9 +10,9 @@ define('ORDER_STATUS', array('pending' => 'Pending', 'processing' => 'Processing
             <div class="col-sm mb-2 mb-sm-0">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-no-gutter">
-                        <li class="breadcrumb-item"><a class="breadcrumb-link" href="ecommerce-orders.html">Orders</a>
+                        <li class="breadcrumb-item"><a class="" href="{{url('admin/orders')}}">Orders</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Order details</li>
+                        <li class=" active">&nbsp;&nbsp;/ Order details</li>
                     </ol>
                 </nav>
 
@@ -66,6 +66,7 @@ define('ORDER_STATUS', array('pending' => 'Pending', 'processing' => 'Processing
                 <div class="card-header card-header-content-between">
                     <h4 class="card-header-title">Order details <span
                             class="badge bg-soft-dark text-dark rounded-circle ms-1">{{count($items)}}</span></h4>
+                    <a class="link" href="javascript:void(0);">Edit</a>
                 </div>
                 <!-- End Header -->
 
@@ -122,9 +123,9 @@ define('ORDER_STATUS', array('pending' => 'Pending', 'processing' => 'Processing
                             <dl class="row text-sm-end">
                                 <dt class="col-sm-6">Item total:</dt>
                                 <dd class="col-sm-6">{{$order_detail['total_item_price']}}</dd>
-                                <dt class="col-sm-6">Delivery fee({{$order_detail['km']}}):</dt>
+                                <dt class="col-sm-6">Delivery fee({{$order_detail['km']}}Km):</dt>
                                 <dd class="col-sm-6">{{$order_detail['km_price']}}</dd>
-                                <dt class="col-sm-6">GST({{$order_detail['gst']}}Km):</dt>
+                                <dt class="col-sm-6">GST({{$order_detail['gst']}}):</dt>
                                 <dd class="col-sm-6">{{$order_detail['gst_per']}}</dd>
                                 <dt class="col-sm-6">Total:</dt>
                                 <dd class="col-sm-6">{{$order_detail['to_pay']}}</dd>

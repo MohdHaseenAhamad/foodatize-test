@@ -8,9 +8,10 @@
             <div class="col-sm mb-2 mb-sm-0">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-no-gutter">
-                        <li class="breadcrumb-item"><a class="breadcrumb-link" href="ecommerce-products.html">Products</a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit Product</li>
+                        <li class="breadcrumb-item"><a class="breadcrumb-link"
+                                                       href="javascript:void(0);">Dashboard</a></li>
+                        <li class=" " aria-current="page"><a href="{{url('admin/products')}}">&nbsp;&nbsp;/  Products</a></li>
+                        <li class=" active" aria-current="page">&nbsp;&nbsp;/ Edit Products</li>
                     </ol>
                 </nav>
 
@@ -111,6 +112,17 @@
                                       placeholder="" aria-label=""
                             >{{isset($result->description) ? $result->description:''}}</textarea>
                         </div>
+                        <div class="mb-4">
+                            <div class="d-flex gap-2">
+
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a href="{{url('admin/products')}}" class="btn btn-warning">Back</a>
+                            </div>
+                            <div class="d-flex gap-2">
+
+
+                            </div>
+                        </div>
 
                         <!-- End Quill -->
                     </div>
@@ -184,27 +196,6 @@
         </div>
         <!-- End Row -->
 
-        <div class="position-fixed start-50 bottom-0 translate-middle-x w-100 zi-99 mb-3" style="max-width: 40rem;">
-            <!-- Card -->
-            <div class="card card-sm bg-dark border-dark mx-2">
-                <div class="card-body">
-                    <div class="row justify-content-center justify-content-sm-between">
-
-                        <!-- End Col -->
-
-                        <div class="col-auto">
-                            <div class="d-flex gap-3">
-
-                                <button type="submit" class="btn btn-primary">Save</button>
-                            </div>
-                        </div>
-                        <!-- End Col -->
-                    </div>
-                    <!-- End Row -->
-                </div>
-            </div>
-            <!-- End Card -->
-        </div>
     </form>
 </div>
 

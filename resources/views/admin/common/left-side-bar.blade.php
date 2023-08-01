@@ -55,7 +55,7 @@
                     <div class="nav-item">
                         <a class="nav-link " href="{{ url('admin') }}" data-placement="left">
                             <i class="bi-house-door nav-icon"></i>
-                            <span class="nav-link-title">Dashboards</span>
+                            <span class="nav-link-title">Dashboard</span>
                         </a>
                     </div>
                     <div class="nav-item">

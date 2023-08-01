@@ -28,7 +28,7 @@
     <div class="row">
         <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
             <!-- Card -->
-            <a class="card card-hover-shadow h-100" href="#">
+            <a class="card card-hover-shadow h-100" href="{{url('admin/orders')}}">
                 <div class="card-body">
                     <h6 class="card-subtitle">Orders</h6>
 
@@ -47,7 +47,7 @@
 
         <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
             <!-- Card -->
-            <a class="card card-hover-shadow h-100" href="#">
+            <a class="card card-hover-shadow h-100" href="{{url('admin/users')}}">
                 <div class="card-body">
                     <h6 class="card-subtitle">Customers</h6>
 
@@ -65,7 +65,7 @@
         </div>
         <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
             <!-- Card -->
-            <a class="card card-hover-shadow h-100" href="#">
+            <a class="card card-hover-shadow h-100" href="{{url('admin/products')}}">
                 <div class="card-body">
                     <h6 class="card-subtitle">Products</h6>
 

@@ -79,7 +79,7 @@ class ProductController extends Controller {
             'name' => ['required', 'min:2', 'max:100'],
             'pieces' => ['required'],
             'price' => ['required'],
-            'description' => ['required', 'min:2', 'max:500'],
+            'description' => [ 'min:2', 'max:500'],
         ], [
             'required' => ':attribute is required.',
             'min' => 'Please enter at least :min characters',
@@ -97,6 +97,7 @@ class ProductController extends Controller {
                 'name'=> $request->name,
                 'pieces'=> $request->pieces,
                 'price' => $request->price,
+                'quantity'=> $request->quantity,
                 'description' => $request->description,
             ];
             if($request->hasFile('image'))
@@ -122,8 +123,8 @@ class ProductController extends Controller {
         }
     }
 
-    public function delete($id) {
-
+    public function delete($id)
+    {
         try {
             Product::find($id)->delete();
             session()->flash('success', "Product Deleted Successfully!!");

@@ -8,9 +8,10 @@
             <div class="col-sm mb-2 mb-sm-0">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-no-gutter">
-                        <li class="breadcrumb-item"><a class="breadcrumb-link" href="{{url('admin/products')}}">Products</a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">Add Product</li>
+                        <li class="breadcrumb-item"><a class="breadcrumb-link"
+                                                       href="javascript:void(0);">Dashboard</a></li>
+                        <li class=" " aria-current="page"><a href="{{url('admin/products')}}">&nbsp;&nbsp;/  Products</a></li>
+                        <li class=" active" aria-current="page">&nbsp;&nbsp;/ Add Products</li>
                     </ol>
                 </nav>
 
@@ -91,7 +92,7 @@
                             <div class="col-sm-6">
                                 <!-- Form -->
                                 <div class="mb-4">
-                                    <label for="quantity" class="form-label">Quantity</label>
+                                    <label for="quantity" class="form-label">Stock</label>
 
                                     <input type="text" class="form-control" name="quantity" id="quantity"
                                            placeholder="eg. 348121032" value="">
@@ -105,11 +106,19 @@
                         </div>
                         <!-- End Row -->
                         <div class="mb-4">
-                            <label class="form-label">Description <span class="form-label-secondary">(Optional)</span></label>
+                            <label class="form-label">Description <span
+                                    class="form-label-secondary">(Optional)</span></label>
 
                             <textarea type="text" rows="3" class="form-control" name="description" id="description"
                                       placeholder="" aria-label=""
-                                      ></textarea>
+                            ></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <div class="d-flex gap-2">
+
+                                <button type="submit" class="btn btn-primary">Save</button>
+                                <a href="{{url('admin/products')}}" class="btn btn-warning">Back</a>
+                            </div>
                         </div>
 
                         <!-- End Quill -->
@@ -160,7 +169,7 @@
                             </div>
                         </div> --}}
                         <label>
-                            <input type="file" name="image" id="image" accept="image/*" />
+                            <input type="file" name="image" id="image" accept="image/*"/>
                         </label>
                         <!-- End Dropzone -->
                     </div>
@@ -176,27 +185,7 @@
         </div>
         <!-- End Row -->
 
-        <div class="position-fixed start-50 bottom-0 translate-middle-x w-100 zi-99 mb-3" style="max-width: 40rem;">
-            <!-- Card -->
-            <div class="card card-sm bg-dark border-dark mx-2">
-                <div class="card-body">
-                    <div class="row justify-content-center justify-content-sm-between">
 
-                        <!-- End Col -->
-
-                        <div class="col-auto">
-                            <div class="d-flex gap-3">
-
-                                <button type="submit" class="btn btn-primary">Save</button>
-                            </div>
-                        </div>
-                        <!-- End Col -->
-                    </div>
-                    <!-- End Row -->
-                </div>
-            </div>
-            <!-- End Card -->
-        </div>
     </form>
 </div>
 
@@ -236,7 +225,7 @@
 
 <!-- JS Plugins Init. -->
 <script>
-    (function() {
+    (function () {
         window.onload = function () {
 
 
