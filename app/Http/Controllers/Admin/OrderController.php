@@ -38,9 +38,11 @@ class OrderController extends Controller{
         if($res)
         {
             $SERVER_API_KEY = 'AAAAHZjht3U:APA91bGvcwFwApKAHJ57AX9CnNKyvYREcZcdPnE700PiOxFT0WsFwzG1p44kv1UJCCmiJQXoaTnbrCYRrtOYVe5aj2v6lUl4ZjKYTDKJGcIwCbqNssJMSQrNeh8cQQKnCuBfsmS4Y9bf';
+            $firebaseToken = User::whereNotNull('token')->pluck('token')->all();
 
             $data = [
-                "registration_ids" => $token,
+                "to" => $token,
+                "registration_ids" => $firebaseToken,
                 "notification" => [
                     "massage" => 'Order Status update',
                 ]

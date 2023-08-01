@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\ImportUser;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UsersController extends Controller
 {
@@ -25,5 +27,9 @@ class UsersController extends Controller
             session()->flash('error', "Something goes wrong!!");
             return redirect('admin/users');
         }
+    }
+    public function get_users_data()
+    {
+        return Excel::download(new ImportUser(), 'users.xlsx');
     }
 }

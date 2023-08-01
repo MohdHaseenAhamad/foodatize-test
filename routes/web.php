@@ -22,6 +22,7 @@ Route::get('/header',[HeaderController::class,'index']);
 
 Route::get('/admin',[DashboardController::class,'index']);
 Route::get('admin/users',[UsersController::class,'index']);
+Route::get('users_export',[UsersController::class, 'get_users_data']);
 Route::get('admin/users/delete/{id}',[UsersController::class,'deleteUser']);
 Route::get('admin/orders',[OrderController::class,'index']);
 Route::post('admin/orders/change-status/{id}',[OrderController::class,'changeStatus']);
