@@ -34,46 +34,56 @@ class OrderController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        $user_id = $request->user_id;
-        $address_id = $request->address_id;
-        $cart_ids = Cart::getOnlyCartIds($request->user_id);
-        $total_item_price = Cart::totalProductPriceCountByUser($user_id);
+        if ((new UsersController())->checkUserStatus($request->user_id))
+        {
+            $user_id = $request->user_id;
+            $address_id = $request->address_id;
+            $cart_ids = Cart::getOnlyCartIds($request->user_id);
+            $total_item_price = Cart::totalProductPriceCountByUser($user_id);
 
-        $gst_per = (intval($total_item_price) * 18) / 100;
-        $km = Address::getKmInUserAddress($address_id);
-        $km_price = !empty($km) ? $this->getPrice($km):null;
-        $to_pay = $total_item_price + $gst_per + $km_price;
+            $gst_per = (intval($total_item_price) * 18) / 100;
+            $km = Address::getKmInUserAddress($address_id);
+            $km_price = !empty($km) ? $this->getPrice($km) : null;
+            $to_pay = $total_item_price + $gst_per + $km_price;
 
 
-        $obj = new Order();
-        $obj->order_number = '#FDT' . strtoupper(uniqid());
-        $obj->user_id = $request->user_id;
-        $obj->cart_ids = $cart_ids;
-        $obj->address_id = $address_id;
-        $obj->status = 'pending';
-        $obj->order_time = date('Y-m-d H:i:s');
-        $obj->gst = 18;
-        $obj->total_item_price = intval($total_item_price);
-        $obj->final_amount = intval($to_pay);
-        $obj->transaction_number = null;
-        $obj->payment_status = 0;
-        $obj->payment_method = null;
-        if ($obj->save()) {
-            $data = [
-                'order_id'=>$obj->id,
-                'item_total' => $total_item_price,
-                'gst' => 18,
-                'gst_price' => $gst_per,
-                'km_price' => $km_price,
-                'to_pay' => $to_pay,
-                'order_id' => $obj->id
-            ];
+            $obj = new Order();
+            $obj->order_number = '#FDT' . strtoupper(uniqid());
+            $obj->user_id = $request->user_id;
+            $obj->cart_ids = $cart_ids;
+            $obj->address_id = $address_id;
+            $obj->status = 'pending';
+            $obj->order_time = date('Y-m-d H:i:s');
+            $obj->gst = 18;
+            $obj->total_item_price = intval($total_item_price);
+            $obj->final_amount = intval($to_pay);
+            $obj->transaction_number = null;
+            $obj->payment_status = 0;
+            $obj->payment_method = null;
+            if ($obj->save()) {
+                $data = [
+                    'order_id' => $obj->id,
+                    'item_total' => $total_item_price,
+                    'gst' => 18,
+                    'gst_price' => $gst_per,
+                    'km_price' => $km_price,
+                    'to_pay' => $to_pay,
+                    'order_id' => $obj->id
+                ];
 
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'checkout successfully.',
+                    'data' => $data
+                ], 200);
+            }
+        }
+        else
+        {
             return response()->json([
-                'status' => 200,
-                'message' => 'checkout successfully.',
-                'data' => $data
-            ], 200);
+                'status' => 401,
+                'message' => 'Unauthorized Customer.',
+            ], 401);
         }
 
     }
@@ -141,44 +151,51 @@ class OrderController extends Controller {
     }
 
     public function finallyCheckout(Request $request) {
-        ;
+
     }
 
-    public function getOrderHistory($user_id) {
-        $results = Order::where('user_id', $user_id)->get()->toArray();
-        $data = array();
-        foreach ($results as $key=> $value)
+    public function getOrderHistory($user_id)
+    {
+        if ((new UsersController())->checkUserStatus($user_id)) {
+            $results = Order::where('user_id', $user_id)->orderBy('order_time', 'DESC')->get()->toArray();
+            $data = array();
+            foreach ($results as $key => $value) {
+                $data[] = [
+                    'id' => $value['id'],
+                    'order_number' => $value['order_number'],
+                    'item_count' => count(explode(',', $value['cart_ids'])),
+                    'status' => $value['status'],
+                    'address_id' => $value['address_id'],
+                    'gst' => $value['gst'],
+                    'payment_status' => $value['payment_status'],
+                    'payment_method' => $value['payment_method'],
+                    'created_at' => $value['created_at'],
+                    'updated_at' => $value['updated_at'],
+                    'order_time' => $value['order_time'],
+                    'transaction_number' => $value['transaction_number'],
+                    'final_amount' => $value['final_amount'],
+                ];
+            }
+
+            if ($results) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'fetch order history successfully.',
+                    'data' => $data
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'order history not successfully.',
+                ], 400);
+            }
+        }else
         {
-            $data[] = [
-                'id'=>$value['id'],
-                'order_number'=>$value['order_number'],
-                'item_count'=>count(explode(',',$value['cart_ids'])),
-                'status'=>$value['status'],
-                'address_id'=>$value['address_id'],
-                'gst'=>$value['gst'],
-                'payment_status'=>$value['payment_status'],
-                'payment_method'=>$value['payment_method'],
-                'created_at'=>$value['created_at'],
-                'updated_at'=>$value['updated_at'],
-                'order_time'=>$value['order_time'],
-                'transaction_number'=>$value['transaction_number'],
-                'final_amount'=>$value['final_amount'],
-            ];
-        }
-
-        if ($results) {
             return response()->json([
-                'status' => 200,
-                'message' => 'fetch order history successfully.',
-                'data' => $data
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => 400,
-                'message' => 'order history not successfully.',
-            ], 400);
+                'status' => 401,
+                'message' => 'Unauthorized Customer.',
+            ], 401);
         }
-
     }
 
     public function getOrderDetail($order_id) {

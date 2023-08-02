@@ -27,8 +27,11 @@ use App\Http\Controllers\Api\Website\OrderController;
 Route::post('user/register-users',[UsersController::class,'registerUsers']);
 Route::post('user/otp-verification',[UsersController::class,'otpVerification']);
 Route::put('user/save-basic-info/{id}',[UsersController::class,'saveBasicInfo']);
+Route::get('user/detail/{id}',[UsersController::class,'show']);
 Route::put('user/update/{id}',[UsersController::class,'update']);
 Route::post('user/re-send-otp',[UsersController::class,'reSendOTP']);
+Route::get('user/checkUserStatus/{id}',[UsersController::class,'checkUserStatus']);
+Route::post('/user/loginwithMobile', [UsersController::class, 'loginWithMobile']);
 /* Testing End */
 
 

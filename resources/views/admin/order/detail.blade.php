@@ -66,7 +66,8 @@ define('ORDER_STATUS', array('pending' => 'Pending', 'processing' => 'Processing
                 <div class="card-header card-header-content-between">
                     <h4 class="card-header-title">Order details <span
                             class="badge bg-soft-dark text-dark rounded-circle ms-1">{{count($items)}}</span></h4>
-                    <a class="link" href="javascript:void(0);">Edit</a>
+                    {{--<a class="link" href="javascript:void(0);">Edit</a>--}}
+
                 </div>
                 <!-- End Header -->
 
@@ -94,17 +95,17 @@ define('ORDER_STATUS', array('pending' => 'Pending', 'processing' => 'Processing
                                 <!-- End Col -->
 
                                 <div class="col col-md-2 align-self-center">
-                                    <h5>{{$item->price}}</h5>
+                                    <h5>{{$item->price}}(₹)</h5>
                                 </div>
                                 <!-- End Col -->
 
                                 <div class="col col-md-2 align-self-center">
-                                    <h5>{{$item->quantity}}</h5>
+                                    <h5>{{$item->quantity}}(Stock)</h5>
                                 </div>
                                 <!-- End Col -->
 
                                 <div class="col col-md-2 align-self-center text-end">
-                                    <h5>{{$item->price * $item->quantity}}</h5>
+                                    <h5>{{$item->price * $item->quantity}}(₹)</h5>
                                 </div>
                                 <!-- End Col -->
                             </div>

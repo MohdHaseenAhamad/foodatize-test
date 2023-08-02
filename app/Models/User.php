@@ -59,11 +59,13 @@ class User extends Authenticatable implements JWTSubject {
 //
         $phoneNumberExistOrNot = User::where('phone_number', '=', $request['phone_number'])->exists();
         if ($phoneNumberExistOrNot) {
+
             $res = User::where('phone_number', $request['phone_number'])->update($request);
             $result['data'] = User::where('phone_number', $request['phone_number'])->first();
             $result['user_type'] = 'old';
         } else {
             $users = User::create($request);
+
             $result['data'] = User::find($users->id); /*Fetch Data Using Id  */
             $result['user_type'] = 'new';
         }
@@ -73,11 +75,18 @@ class User extends Authenticatable implements JWTSubject {
     }
 
     public function otpVerification($request) {
-        $result = User::where('phone_number', '=', $request['phone_number'])->where('phone_otp', '=', $request['phone_otp'])->get()->toArray();
+        try
+        {
+            $result = User::where('phone_number', '=', $request['phone_number'])->where('phone_otp', '=', $request['phone_otp'])->get()->toArray();
+        }catch (\Exception $e)
+        {
+//            $result = false;
+        }
+//dd($result);
 
         if (count($result) > 0) {
 
-            return $result;
+            return true;
         }
         return false;
     }

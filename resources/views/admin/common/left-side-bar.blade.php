@@ -5,13 +5,13 @@
             <!-- Logo -->
 
             <a class="navbar-brand" href="index.blade.php" aria-label="Front">
-                <img class="navbar-brand-logo" src="{{ asset('assets/svg/logos/logo.svg') }}" alt="Logo"
+                <img class="navbar-brand-logo" src="{{ asset('assets/svg/logos/splash3.png') }}" alt="Logo"
                      data-hs-theme-appearance="default">
-                <img class="navbar-brand-logo" src="{{ asset('assets/svg/logos-light/logo.svg') }}" alt="Logo"
+                <img class="navbar-brand-logo" src="{{ asset('assets/svg/logos/splash3.png') }}" alt="Logo"
                      data-hs-theme-appearance="dark">
-                <img class="navbar-brand-logo-mini" src="{{ asset('assets/svg/logos/logo-short.svg') }}" alt="Logo"
+                <img class="navbar-brand-logo-mini" src="{{ asset('assets/svg/logos/splash3.png') }}" alt="Logo"
                      data-hs-theme-appearance="default">
-                <img class="navbar-brand-logo-mini" src="{{ asset('assets/svg/logos-light/logo-short.svg') }}"
+                <img class="navbar-brand-logo-mini" src="{{ asset('assets/svg/logos/splash3.png') }}"
                      alt="Logo" data-hs-theme-appearance="dark">
             </a>
 
